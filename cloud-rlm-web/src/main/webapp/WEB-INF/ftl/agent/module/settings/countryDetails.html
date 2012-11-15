@@ -1,0 +1,130 @@
+<#import "/agent/module/settings/countryFrame.html" as sframe>
+<#import "/common/utils/html-generator.html" as htmlGen>
+<#assign transforEnumToList = "au.com.isell.rlm.common.freemarker.func.EnumToList"?new()>
+<#assign dataLoader = "au.com.isell.rlm.common.freemarker.func.DataLoader"?new()>
+
+<@sframe.setting>
+<script type="text/javascript" src="${sframe.resourceBasePath}/js/entry/agent/module/setting/country-detail.js"></script>
+<div id="content">
+	<@sframe.settingNavTabs "details"/>
+
+	<div id="contentBody">
+		<form action="#" autocomplete="off" method="post" id="detail-form">
+			<div id="actionBar">
+				<ul>
+					<@shiro.hasPermission name="setting:edit">
+					<li><button class="link-btn edit-btn" type="button">Edit</button></li>
+					<li><button class="link-btn save-btn">Save</button></li>
+					<li><button class="link-btn cancel-btn" type="reset">Cancel</button></li>
+					</@shiro.hasPermission>
+				</ul>
+			</div>
+			<div class="commonBox" style="width:35%">
+				<h2>Country Details</h2>
+				<table>
+					<input type="hidden" name="country.type" value="${(country.type)!}" />
+					<input type="hidden" name="regionDatas" id="regionDatas" />
+					<tr class="country-item">
+						<td>Name</td>
+						<td>
+							<div class="ui-widget searchable-combobox">
+								<select name="country.name"  reg="^.+$" tip="not blank">
+									<option value="" data-country-code="" data-currency-code=""></option>
+									<#assign dataList=dataLoader('au.com.isell.rlm.module.system.service.SystemService',"getDefaultCountries")> 
+									<#list dataList as dataItem>
+										<#if country.name?? && country.name?string==dataItem[0]?string>
+											<option value="${dataItem[0]}" data-country-code="${dataItem[1]}" data-currency-code="${(dataItem[2])!}" selected="selected">${dataItem[0]}</option>
+										<#else>
+											<option value="${dataItem[0]}" data-country-code="${dataItem[1]}" data-currency-code="${(dataItem[2])!}">${dataItem[0]}</option>
+										</#if>
+									</#list>
+								</select>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>Short Name</td>
+						<td><input type="text" size="15" value="${(country.shortName)!}" name="country.shortName"/></td>
+					</tr>
+					<tr>
+						<td>Code</td>
+						<td><input type="text"  readonly="readonly" class="disabled" size="15" value="${(country.code)!}" name="country.code"/></td>
+					</tr>
+					<tr class="currency-item">
+						<td>Currency</td>
+						<td>
+							<select name="country.currency">
+								<option value=""></option>
+								<#assign dataList=dataLoader('au.com.isell.rlm.module.system.service.SystemService',"getCurrencies")> 
+								<@htmlGen.selOptions (country.currency)!'null' dataList {"key":"code","display":"code"}/>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Area Code</td>
+						<td><input type="text" size="15" value="${(country.phoneAreaCodeBind)!}" name="country.phoneAreaCodeBind"/></td>
+					</tr>
+					<tr>
+						<td>Default Agency</td>
+						<td>
+							<select name="country.defaultAgency">
+								<option value=""></option>
+								<#assign dataList=dataLoader('au.com.isell.rlm.module.agent.service.AgentService',"getAgencyList")> 
+								<@htmlGen.selOptions (country.defaultAgency)!'null' dataList {"key":"agentId","display":"name"}/>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Has Postcodes</td>
+						<td><input type="checkbox"  ${(country.hasPostcode!false)?string( "checked='checked'","")} name="country.hasPostcode" /></td>
+					</tr>
+					<tr>
+						<td>Postcode Name</td>
+						<td><input type="text"  name="country.postcodeName" value="${(country.postcodeName)!}"/></td>
+					</tr>
+					<tr>
+						<td>Tax Rate</td>
+						<td><input type="text" size='2' name="country.taxRate" value="${(country.taxRate)!}" reg="^\d*$"/>%</td>
+					</tr>
+					<tr>
+						<td>Tax Name</td>
+						<td><input type="text"  name="country.taxName" value="${(country.taxName)!}"/></td>
+					</tr>
+					<tr>
+						<td>Has Regions</td>
+						<td><input type="checkbox" value="true" ${(showRegion)!} name="showRegion" id="hasRegions"/></td>
+					</tr>
+					<tr>
+						<td>Region Name</td>
+						<td><input type="text" value="${(country.regionName)!}" name="country.regionName" id="regionName"/></td>
+					</tr>
+				</table>
+			</div>
+			<div style="clear: both;"></div>
+			<br>
+			<div id="regionDiv" class="commonBox" style="width:35%">
+				<h2><span id="regionNameDisp">${(country.regionName)!'new region'}</span><a style="float:right;" href="" title="Add Sub Region" class="add-region-btn">Add</a></h2>
+				<table class="maxWidthTable sortable" id="RegionTable">
+					<tr class="region-item" id="filterTitle">
+						<th>Name</th>
+						<th>Short Name</th>
+						<th>Action</th>
+					</tr>
+					<#if regionData??>
+						<#list regionData as item>
+							<tr class='regionRow'>
+								<input type="hidden" data-name='code' value="${(item.code)!}" value="false" />
+								<td><input type="text"  value="${(item.name)!}" reg="^.+$" tip="not blank" data-name="name" class='form-field3'/></td>
+								<td><input type="text"  value="${(item.shortName)!}" data-name="shortName" class='form-field3'/></td>
+								<td><a href="" class="delete-region-btn">Delete</a></td>
+							</tr>
+						</#list>
+					</#if>
+				</table>
+			</div>
+			<div style="clear: both;"></div>
+		</form>
+	</div>
+</div>
+
+</@sframe.setting>

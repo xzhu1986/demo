@@ -1,0 +1,57 @@
+<#import "/agent/module/resellers/resellerFrame.html" as rframe>
+<#include "/common/frame/global-settings.html">
+
+<div id="notify-filter">
+	<form action="${basePath}/supplier/${supplierId}/notify-reseller/filter" autocomplete="off">
+		<table id="invoicesTable" class="maxWidthTable sortable">
+			<tr id="filter">
+				<th><input name="name" style="width:100%" type="text" value='${name!}'/></th>
+				<th>
+					<select name="country" id="country" style="width:100%">
+						<option value=""></option>
+						<#assign dataList=dataLoader('au.com.isell.rlm.module.address.service.impl.AddressServiceImpl',"getSubItems",'root')>
+						<@htmlGen.selOptions country!'' dataList {"key":"code","display":"name"}/>
+					</select>
+				</th>
+				<th>
+					<select name="country" id="country" style="width:100%">
+						<option value=""></option>
+						<#assign dataList=dataLoader('au.com.isell.rlm.module.agent.service.AgentService',"getAgencyList")>
+						<@htmlGen.selOptions agent!'' dataList {"key":"agentId","display":"name"}/>
+					</select>
+				</th>
+				<th><input name="email"  style="width:100%" type="text" value='${email!}'/></th>
+				<th class="nowrap">
+					<input name="phone"  style="width:50%" type="text" value='${phone!}'/>
+					<button class="link-btn edit-btn">Search</button>
+					<button class="link-btn edit-btn" type="button" id="previewEmail" data-url="${basePath}/supplier/${supplierId}/notify-reseller/email">Email</button>
+				</th>
+			</tr>
+
+			<tr id="filterTitle">
+				<td>Name</td>
+				<td>Country</td>
+				<td>Agent</td>
+				<td>Email</td>
+				<td>Phone</td>
+			</tr>
+				<#if data??>
+					<#list data as item>
+						<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+							<td>${item.company!}</td>
+							<td>
+								<#assign addrData=dataLoader('au.com.isell.rlm.module.address.service.AddressService','getAddressItem',(item.resCountry)!)>
+								${(addrData.shortName)!}
+							</td>
+							<td>
+								<#assign addrData=dataLoader('au.com.isell.rlm.module.agent.service.AgentService','getAgent',(item.resAgent)!)>
+								${(addrData.name)!}
+							</td>
+							<td>${item.resEmail!}</td>
+							<td>${item.resPhone!}</td>
+						</tr>
+					</#list>
+				</#if>	
+		</table>
+	</form>
+</div>

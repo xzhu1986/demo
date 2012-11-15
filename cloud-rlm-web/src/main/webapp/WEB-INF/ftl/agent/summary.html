@@ -1,0 +1,72 @@
+<#import "/common/frame/frame.html" as frame>
+<#include '/common/frame/global-settings.html'> 
+<@frame.main>
+				<div id="content">
+					<@frame.isellNavTabs "summary"/>
+					<div id="contentBody">
+						<div id="sidebar">
+						</div>
+						<div id="contentMain">
+							<p id="welcome"><@i18n.msg 'site.welcome'/> ${Session.user.firstName},</p>
+							<@shiro.hasPermission name="reseller:summary">
+							<ul class="ulSummary">
+								<li><a href="${frame.basePath}/agent/resellers?filter=LastSyncGt1Day"><label>${resellerStatisticsByStatus[1]}</label>   Resellers not synchronized > 1 day</a></li>
+								<li><a href="${frame.basePath}/agent/resellers?filter=WaitingSuppliers"><label>${resellerStatisticsByStatus[3]}</label>   Active waiting on supplier approval</a></li>
+							</ul>
+							
+							<table class="ulSummary">
+								<tr>
+									<th></th>
+									<#assign status=transforEnumToList('au.com.isell.rlm.module.reseller.domain.Reseller$ResellerStatus','true')>
+									<#list status as item>
+										<th class="textRightAligned"><@i18n.msg item.name/></th>
+									</#list>
+								</tr>
+								
+								<#list resellerStatisticsByCountry as item>
+									<tr ${(item.key.key!='')?string('','class="total-counts-of-country"')}>
+										<td>${item.key.value}</td>
+										<#list item.value as subItem>
+											<td class="textRightAligned">
+												<#if item.key.key!=''><#assign hrefText>href="${frame.basePath}/agent/resellers?country=${item.key.key}&status=${subItem.key}"</#assign></#if>
+												<#if subItem?? && subItem.value?? && subItem.value==0><#assign styleText='style="color:#999;"'><#else><#assign styleText=''></#if>
+												<a ${hrefText!} ${styleText!}>${subItem.value!}</a>
+											</td>
+										</#list>
+									</tr>
+								</#list>
+							</table>
+							</@shiro.hasPermission>
+							
+							<@shiro.hasPermission name="supplier:view">
+							<table class="ulSummary">
+								<tr>
+									<th></th>
+									<th class="textRightAligned">Active Suppliers</th>
+									<th class="textRightAligned">Price Breaks</th>
+								</tr>
+								
+								<#list supplierStatisticsByStatus as item>
+									<tr ${(item.key.key!='')?string('','class="total-counts-of-country"')}>
+										<td>${item.key.value}</td>
+										<#list item.value as subItem>
+											<td class="textRightAligned">
+												<#if subItem_index==0>
+													<#assign hrefText>href="${frame.basePath}/agent/suppliers?country=${item.key.key}&status=${subItem.key}"</#assign>
+												<#else>
+													<#assign hrefText=''>
+												</#if>
+												<#if subItem.value==0><#assign styleText='style="color:#999;"'><#else><#assign styleText=''></#if>
+												<a ${hrefText!} ${styleText!}>${subItem.value}</a>
+											</td>
+										</#list>
+									</tr>
+								</#list>
+							</table>
+							</@shiro.hasPermission>
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+				</div>
+	
+</@frame.main>

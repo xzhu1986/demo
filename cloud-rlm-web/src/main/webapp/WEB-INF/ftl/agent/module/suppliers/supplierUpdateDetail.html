@@ -1,0 +1,26 @@
+<#import "/agent/module/suppliers/supplierFrame.html" as sframe>
+<#assign transforEnumToList = "au.com.isell.rlm.common.freemarker.func.EnumToList"?new()>
+<#assign dataLoader = "au.com.isell.rlm.common.freemarker.func.DataLoader"?new()>
+<#include '/common/frame/global-settings.html'>
+<@sframe.supplier>
+<div id="content">
+	<@sframe.supplierNavTabs "supplierUpdateDetails"/>
+		<div id="contentBody">
+			<form action="#" autocomplete="off" method="post" id="detail-form">
+				<div id="actionBar">
+					<ul>
+						<@shiro.hasPermission name="priceupdates:edit">
+						<li><button class="link-btn edit-btn" type="button">Edit</button></li>
+						<li><button class="link-btn save-btn">Save</button></li>
+						<li><button class="link-btn cancel-btn" type="reset">Cancel</button></li>
+						</@shiro.hasPermission>
+						<#if executeMsg?? && executeMsg!=""><li><a style="color:red">${executeMsg}</a></li></#if>
+					</ul>
+				</div>
+				<#include "common/priceUpdateDetail.html"/> 
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="${sframe.resourceBasePath}/js/entry/agent/module/supplier/supplier-update-detail.js"></script>
+</@sframe.supplier>

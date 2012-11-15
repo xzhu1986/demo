@@ -1,0 +1,46 @@
+<#import "/agent/module/suppliers/supplierFrame.html" as sframe>
+<#import "/module/address/address.html" as addr>
+<#import "/common/utils/html-generator.html" as htmlGen>
+<#assign transforEnumToList = "au.com.isell.rlm.common.freemarker.func.EnumToList"?new()>
+<#assign dataLoader = "au.com.isell.rlm.common.freemarker.func.DataLoader"?new()>
+
+<@sframe.supplier>
+<div id="content">
+	<@sframe.supplierNavTabs "priceBreaks"/>
+	<div id="contentBody">
+		<form action="#" method="post" id="pricebreak-form">
+			<div id="actionBar">
+				<ul>
+					<@shiro.hasPermission name="supplier:priceBreak:edit">
+						<li><button class="link-btn edit-btn" type="button">Edit</button></li>
+						<li><button class="link-btn save-btn">Save</button></li>
+					</@shiro.hasPermission>
+						<li><button type="button" class="link-btn go-back-btn not-hide-btn">Cancel</button></li>
+				</ul>
+			</div>
+			
+			<div class="commonBox">
+				<h2>Details</h2>
+				<table>
+					<tr>
+						<td>Break Name</td>
+						<td><input type="text" size="30" name="name" value="${(data.name)!}"/>
+						<input type="hidden" name="name" value="${(data.idataId)!}"/></td>
+					</tr>
+					
+					<tr>
+						<td>Status</td>
+						<td><select name="status">
+								<#assign resellerTypeDataList=transforEnumToList('au.com.isell.rlm.module.supplier.domain.PriceBreak$Status',"false")> 
+								<@htmlGen.selOptions (data.status)!'' resellerTypeDataList {"key":"key","display":"name"}/>
+						</select></td>
+					</tr>
+				</table>
+			</div>
+		</form>	
+		<div style="clear: both;"></div>
+	</div>
+
+</div>
+<script type="text/javascript" src="${sframe.resourceBasePath}/js/entry/agent/module/supplier/priceBreakEdit.js"></script>
+</@sframe.supplier>

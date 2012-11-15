@@ -1,0 +1,74 @@
+<#import "/reseller-portal/account/accountFrame.html" as rframe>
+<#include "/common/frame/global-settings.html">
+<@rframe.account>
+<div id="content">
+	<div id="contentBody">
+		<div id="actionBar">
+			<@rframe.nav 'users'/>
+			<@shiro.hasPermission name="resellerportal:create_edit_user">
+			<ul class="rightAligned sub-nav-bar">
+				<li>
+					<a href="${rframe.basePath}/reseller-portal/account/user/new">New User</a>
+				</li>
+			</ul>
+			</@shiro.hasPermission>
+		</div>
+		<div id="sidebar">
+			<div class="surroundingBox">
+				<h2>Filters</h2>
+				<ul id='query-filters'>
+					<#assign dataList=transforEnumToList('au.com.isell.rlm.module.reseller.vo.ResellerUserSearchFilters',"false")>
+					<#list dataList as dataItem>
+						<#if filter?? && filter?string==dataItem.key?string>
+							<li class="selected"><a href="" data-val='${dataItem.key}' >${dataItem.name}</a></li>
+						<#else>
+							<li><a href="" data-val='${dataItem.key}' >${dataItem.name}</a></li>
+						</#if>
+					</#list>
+				</ul>
+			</div>
+		</div>
+		<div id="contentMain">
+			<form action="#" id="users-search-form" autocomplete="off">
+				<input type="hidden" name="filter" value='${(filter)!}'/>
+				<input type="hidden" name="serialNo" value='${(serialNo)!}'/>
+				<table class="maxWidthTable sortable">
+					<tr id="filterTitle">
+						<td>Name</td>
+						<td>Job Title</td>
+						<td>Phone</td>
+						<td>Email</td>
+						<td>Status</td>
+					</tr>
+					<#if data??>
+						<#list data as item>
+							<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+								<td>
+									<@shiro.hasPermission name="resellerportal:create_edit_user">
+										<a href="${rframe.basePath}/reseller-portal/account/user/${item.userId!}">
+									</@shiro.hasPermission>
+									${(item.firstName)!} ${(item.lastName)!}
+									<@shiro.hasPermission name="resellerportal:create_edit_user">
+										</a>
+									</@shiro.hasPermission>
+								</td>
+								<td>${(item.jobPosition)!}</td>
+								<td>${(item.phone)!}</td>
+								<td>${(item.email)!}</td>
+								<td>${(item.status)!}</td>
+							</tr>
+						</#list>
+					</#if>
+				</table>
+			</form>
+			<div id="pageLinks">
+				<@pagingBar.pagingBar1 paging/>
+			</div>
+		</div>
+		
+		<div style="clear: both;"></div>
+	</div>	
+	
+</div>	
+<script type="text/javascript" src="${rframe.resourceBasePath}/js/entry/reseller-portal/account/users.js"></script>
+</@rframe.account>

@@ -1,0 +1,39 @@
+<#include '/common/frame/global-settings.html'>
+
+<#macro priceUpdate>
+	<#assign supplier_temp=dataLoader('au.com.isell.rlm.module.supplier.service.SupplierService',"getSupplier",supplierId)>
+	<#assign displayTitle='Price Update: '+supplier_temp.name+' ('+supplier_temp.country?upper_case+')'>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>${displayTitle}</title>
+		<#include '/common/resource.html'>
+	</head>
+	<body>
+		<div id="contentZone">
+			<div id="headerDate">
+				<p id="date">${.now?string('EEEEEE dd MMM yyyy')}</p>
+			</div>
+			<div id="contentContainer">
+				<div id="contentCommon">
+					<h1>${displayTitle}</h1>
+					<#include '/common/frame/user-action.html'>
+				</div>
+				<#nested>
+			</div>
+		</div>
+	</body>
+</html>
+</#macro>
+
+<#macro priceUpdateNavTabs activeTab>
+	<div id="navbar">
+		<ul id="navbarCommon">
+			<#if (activeTab?? && activeTab=='details') ><li class="active"><#else><li></#if>
+				<a href="${basePath}/supplier/${supplierId}/priceupdates/${scheduleId}/details">Details</a></li>
+			<#if (activeTab?? && activeTab=='history') ><li class="active"><#else><li></#if>
+				<a href="${basePath}/supplier/${supplierId}/priceupdates/${scheduleId}/history">History</a></li>
+		</ul>
+	</div>
+</#macro>

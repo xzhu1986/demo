@@ -1,0 +1,18 @@
+<#assign localeTemp=req['locale']!'en_AU'>
+
+<#if localeTemp?index_of('en',0)==0>
+	<#setting datetime_format="dd MMM yyyy 'at' h:mm a">
+	<#setting date_format="dd MMM yyyy">
+	<#setting time_format="h:mm a">
+	
+<#elseif localeTemp?index_of('zh',0)==0>
+	<#setting datetime_format="yyyy'年'M'月'd'日' ah'点'mm'分'">
+	<#setting date_format="yyyy'年'M'月'd'日'">
+	<#setting time_format="ah'点'mm'分'">
+	
+<#else>
+	<#setting datetime_format="dd MMM yyyy 'at' h:mm a">
+	<#setting date_format="dd MMM yyyy">
+	<#setting time_format="h:mm a">
+
+</#if>

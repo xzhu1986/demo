@@ -1,0 +1,37 @@
+<#--
+	generate html select options
+	dataList like : [{"userId":"id...","userName":"name..."},{...}]
+	dataMap like : {"key":"userId","display":"userName"}
+-->
+<#macro selOptions selVal dataList dataMap>
+	<#assign key=dataMap.key>
+	<#assign display=dataMap.display>
+	
+	<#list dataList as dataItem>
+		<#assign displayVal=dataItem[display]>
+		<#assign isSelected=(selVal?? && selVal?string==((dataItem[key])!'')?string)>
+		<option value="${dataItem[key]}" ${isSelected?string('selected="selected"','')}><@i18n.msg displayVal/></option>
+	</#list>
+</#macro>
+
+<#macro uploadField fieldName>
+	<span  style="font-size:12px; overflow:hidden; position:absolute;">
+		<input type="file" class="file" name="${fieldName}" size="1" style="position:absolute; z-index:100; margin-left:-180px; font-size:60px; opacity:0; filter:alpha(opacity=0);">
+		<input readonly="readonly"> 
+		<input type="button" value="...">
+	</span>
+	
+	<script type="text/javascript">
+		$('.file[name="${fieldName}"]').change(function(){
+			$(this).next().val($(this).val());
+		});
+	</script>
+</#macro>
+
+<#macro siteName><#compress>
+	<#if (Session.entry)?? && Session.entry='/supplier'>
+		<@i18n.msg 'site.name.supplier'/>
+	<#else>
+		<@i18n.msg 'site.name'/>
+	</#if>
+</#compress></#macro>

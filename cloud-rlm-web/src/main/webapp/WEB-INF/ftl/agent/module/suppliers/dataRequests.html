@@ -1,0 +1,105 @@
+<#import "/agent/module/suppliers/supplierFrame.html" as sframe>
+<#import "/module/address/address.html" as addr>
+<#import "/common/utils/html-generator.html" as htmlGen>
+<#assign transforEnumToList = "au.com.isell.rlm.common.freemarker.func.EnumToList"?new()>
+<#assign dataLoader = "au.com.isell.rlm.common.freemarker.func.DataLoader"?new()>
+
+<@sframe.supplier>
+<div id="content">
+	<@sframe.supplierNavTabs "dataRequests"/>
+	<div id="contentBody">
+		<form action="#" autocomplete="off" method="post" id="datarequest-form">
+			<div id="actionBar">
+				<ul>
+					<@shiro.hasPermission name="supplier:dataRequest:edit">
+					<li><button class="link-btn edit-btn" type="button">Edit</button></li>
+					<li><button class="link-btn save-btn">Save</button></li>
+					<li><button class="link-btn cancel-btn" type="reset">Cancel</button></li>
+					</@shiro.hasPermission>
+				</ul>
+			</div>
+			
+			<div class="commonBox">
+				<h2>How Resellers register and pricing is gathered</h2>
+				<table>
+					<tr>	
+						<td>Signup Method</td>
+						<td><select name="signupMethod">
+							<#assign dataList=transforEnumToList('au.com.isell.rlm.module.supplier.domain.DataRequest$SignupMethod',"false")> 
+							<@htmlGen.selOptions (dataRequest.signupMethod)!'' dataList {"key":"key","display":"name"}/>	
+						</select></td>
+					</tr>
+					
+					<tr>	
+						<td>Default Price Break</td>
+						<td>
+							<div class="ui-widget searchable-combobox">
+								<select name="defaultPriceBreak" id="defaultPriceBreak" style="width: 11em;">
+									<option value="">N/A</option>
+									<#assign dataList=dataLoader('au.com.isell.rlm.module.supplier.service.impl.SupplierServiceImpl',"queryPriceBreaksBySupplierId",supplierId)> 
+									<@htmlGen.selOptions (defaultPriceBreakId)!'null' dataList {"key":"priceBreakId","display":"name"}/>
+								</select>
+							</div>
+						</td>
+					</tr>
+													
+					<tr>	
+						<td>Show Stock Data</td>
+						<td><input type="checkbox" name="showStockData"  ${((dataRequest.showStockData)?string( "checked='checked'",""))!} /></td>
+					</tr>
+					
+					<tr>	
+						<td>Use Original Tiers</td>
+						<td><input type="checkbox" name="useOriginalTiers"  ${((dataRequest.useOriginalTiers)?string( "checked='checked'",""))!} /></td>
+					</tr>
+					
+					<tr>	
+						<td>Require Account No</td>
+						<td><input type="checkbox" name="requireAccountNo"  ${((dataRequest.requireAccountNo)?string( "checked='checked'",""))!} /></td>
+					</tr>
+					
+					<tr>	
+						<td>Require Login Name</td>
+						<td><input type="checkbox" name="requireLoginName"  ${((dataRequest.requireLoginName)?string( "checked='checked'",""))!} /></td>
+					</tr>
+					
+					<tr>	
+						<td>Require Login Password</td>
+						<td><input type="checkbox" name="requireLoginPassword"  ${(dataRequest.requireLoginPassword?string("checked='checked'",""))!} /></td>
+					</tr>
+					
+					<tr>	
+						<td>Price Download URL:</td>
+						<td></td>
+					</tr>
+					
+					<tr>	
+						<td colspan="2"><input type="text" size="44" name="priceDownloadURL" value="${(dataRequest.priceDownloadURL)!!}" /></textarea></td>
+					</tr>
+													
+					<tr>	
+						<td>Details for Reseller:</td>
+						<td></td>
+					</tr>
+					
+					<tr>	
+						<td colspan="2"><textarea rows="3" cols="44" name="detailsForReseller"/>${(dataRequest.detailsForReseller)!}</textarea></td>
+					</tr>
+					
+					<tr>	
+						<td>Internal Notes (iSell Only):</td>
+						<td></td>
+					</tr>
+					
+					<tr>	
+						<td colspan="2"><textarea rows="3" cols="44" name="internalNotes"/>${(dataRequest.internalNotes)!!}</textarea></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div style="clear: both;"></div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript" src="${sframe.resourceBasePath}/js/entry/agent/module/supplier/dataRequest.js"></script>
+</@sframe.supplier>

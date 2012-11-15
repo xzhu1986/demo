@@ -1,0 +1,62 @@
+<#import "/reseller-portal/resellerFrame.html" as rframe>
+<#include "/common/frame/global-settings.html">
+
+<@rframe.reseller>
+<div id="content">
+	<@rframe.resellerNavTabs "detail"/>
+
+	<div id="contentBody">
+		<div id="actionBar">
+			<ul>
+				<li><a href="resellerSummary.html">Summary</a></li>
+				<li><a href="resellerDetails.html">Details</a></li>
+				<li><a href="resellerUsers.html">Users</a></li>
+			</ul>
+		</div>
+		
+		<div id="sidebar">
+			<div class="surroundingBox">
+				<h2>Filters</h2>
+				<ul>
+					<li><a class="selected" href="">All</a></li>
+					<li><a href="">Active</a></li>
+					<li><a href="">Disabled</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="contentMain">
+			<form action="#" id="" autocomplete="off">
+				<table id="" class="maxWidthTable sortable">
+					<tr id="filterTitle">
+						<td width="35%">Name</td>
+						<td width="20%">Job Title</td>
+						<td width="20%">Phone</td>
+						<td width="20%">Email</td>
+						<td width="5%">Status</td>
+					</tr>
+					
+					<tr>
+						<td><a href="resellerUserDetails.html">Greg Weaver</a></td>
+						<td>Web team</td>
+						<td>+61 2 8090 9388</td>
+						<td>gregw@isell.com.au</td>
+						<td>Active</td>
+					</tr>
+				</table>
+					
+				<div id="pageLinks">
+					<@pagingBar.pagingBar1 paging/>
+				</div>
+			</form>
+		</div>
+
+		<div style="clear: both;"></div>
+	</div>
+</div>
+
+<script type="text/javascript" src="${rframe.resourceBasePath}/js/module/address/choose.js"></script>
+<script type="text/javascript" src="${rframe.resourceBasePath}/js/module/reseller/reseller-detail.js"></script>
+<script type="text/javascript" src="${rframe.resourceBasePath}/js/entry/reseller-portal/reseller-detail.js"></script>
+
+</@rframe.reseller>

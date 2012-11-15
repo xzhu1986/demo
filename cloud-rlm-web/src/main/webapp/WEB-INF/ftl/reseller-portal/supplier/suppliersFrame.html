@@ -1,0 +1,43 @@
+<#import "/reseller-portal/resellerFrame.html" as rframe>
+<#include "/common/frame/global-settings.html">
+
+<#macro supplier type>
+	<@rframe.reseller 'suppliers'>
+		<div id="content">
+			<div id="contentBody">
+				<div id="actionBar">
+					<#-- 
+					<ul>
+						<li><button class="link-btn supplier-reseller-btn" data-url="${rframe.basePath}/reseller-portal/supplier-map/-1">New</button></li>
+					</ul>
+					-->
+					<ul id='query-filters' class='sub-nav-bar'>
+						<#assign dataList=transforEnumToList('au.com.isell.rlm.module.reseller.vo.RSMapSearchFilters4ResellerPortal',"false")>
+						<#list dataList as dataItem>
+							<#if type=='filter' && filter?? && filter?string==dataItem.key?string><#assign cls='selected'><#else><#assign cls=''></#if>
+							<li class="${cls}"><a href="${basePath}/reseller-portal/suppliers?filter=${dataItem.key}">${dataItem.name}</a></li>
+						</#list>
+						
+					</ul>
+					<ul class="rightAligned sub-nav-bar">
+						<#if type=='add'><#assign cls='selected'><#else><#assign cls=''></#if>
+						<li class="${cls}">
+							<a href="${basePath}/reseller-portal/suppliers/not-allcocated">Add Supplier</a>
+						</li>
+					</ul>
+				</div>
+				<#--
+				<div id="sidebar">
+					<div class="surroundingBox">
+						<h2>Filters</h2>
+					</div>
+				</div>
+				-->
+				<#nested/>
+				
+				<div style="clear: both;"></div>
+			</div>	
+			
+		</div>
+	</@rframe.reseller>
+</#macro>

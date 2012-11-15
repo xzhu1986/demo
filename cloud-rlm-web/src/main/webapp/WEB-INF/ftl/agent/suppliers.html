@@ -1,0 +1,129 @@
+<#include '/common/frame/global-settings.html'>
+<#import "/common/frame/frame.html" as frame>
+<#import "/common/popupDiv.html" as popupDiv>
+
+<@frame.main>
+<div id="content">
+	<@frame.isellNavTabs "suppliers"/>
+
+	<div id="contentBody">
+		<div id="sidebar">
+			<div class="surroundingBox">
+				<h2>Filters</h2>
+				<ul id='query-filters'>
+					<#assign dataList=transforEnumToList('au.com.isell.rlm.module.supplier.vo.SupplierSearchFilters',"false")>
+					<#list dataList as dataItem>
+						<#if filter?? && filter?string==dataItem.key?string>
+							<li class="selected"><a href="" data-val='${dataItem.key}' >${dataItem.name}</a></li>
+						<#else>
+							<li><a href="" data-val='${dataItem.key}' >${dataItem.name}</a></li>
+						</#if>
+					</#list>
+				</ul>
+			</div>
+			
+			<div class="surroundingBox">
+				<h2>Maintenance</h2>
+				<ul>
+					<@shiro.hasPermission name="supplier:create">
+						<li><a id="select-country" href="#">New Supplier</a></li>
+					</@shiro.hasPermission>
+					<li><a href="">Supplier Report</a></li>
+					<li><a class="notify-btn" href="${basePath}/supplier/notify-supplier/filter-page">Send Bulk Email</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="contentMain">
+		<form action="#" id="supplier-search-form" autocomplete="off">
+				<input type="hidden" name="filter" value='${(filter)!}'/>
+				<table id="suppliersTable" class="maxWidthTable sortable">
+					<tr id="filter">
+						<th width='25%'><input name="name" id="name" title="" type="text" style="width:100%" value='${(name)!}'/></th>
+						<th width='8%'><input name="supplierId" id="supplierId" title="" type="text" style="width:100%" value='${(supplierId)!}'/></th>
+						<th width='6%'><input name="resellerCount" id="resellerCount" title="" type="text" style="width:100%" value='${(resellerCount)!}'/></th>
+						<th width="8%">
+							<select name="status" id="status" >
+								<option value=""></option>
+								<#assign dataList=transforEnumToList('au.com.isell.rlm.module.supplier.domain.Supplier$Status',"true")>
+								<@htmlGen.selOptions status!"Active" dataList {"key":"key","display":"name"}/>
+							</select>	
+						</th>
+						<th width='10%'></th>
+						<th width="5%">
+							<select name="country" id="country" style="width:100%">
+								<option value=""></option>
+								<#assign dataList=dataLoader('au.com.isell.rlm.module.address.service.impl.AddressServiceImpl',"getSubItems",'root')>
+								<@htmlGen.selOptions country!'' dataList {"key":"code","display":"name"}/>
+							</select>
+						</th>
+						<th width="10%"><input name="city" id="city" title="" type="text" style="width:100%" value='${(city)!}'/></th>
+						<th width="8%">
+							<select name="region" id="region"  style="width:100%" data-url="${frame.basePath}/address/sub-addresses/{0}.json" data-value='${(region)!}'>
+								<option value=""></option>
+							</select>
+						</th>
+						<th width='6%'><input name="productCount" id="productCount" title="" type="text" style="width:100%" value='${(productCount)!}'/></th>
+						<th width="16%">
+							<input name="submit" id="search" type="submit" title="Search" value="" /> 
+							<input name="cancel" id="cancel" value="" type="reset" />
+							<select name="pageSize">
+								<@htmlGen.selOptions (pageSize)!25 pageDataList {"key":"key","display":"value"}/>
+							</select>
+						</th>
+					</tr>
+	
+					<tr id="filterTitle">
+						<td>Supplier</td>
+						<td>ID</td>
+						<td>Resellers</td>
+						<td>Status</td>
+						<td>Renewing</td>
+						<td>Country</td>
+						<td>Head Office</td>
+						<td>Region</td>
+						<td>Products</td>
+						<td>Last Data Imported</td>
+					</tr>
+					
+					<#if data??>
+						<#list data as item>
+							<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+								<td><a href="${frame.basePath}/supplier/${item.supplierId}/details" target="_blank">${(item.name)!}</a></td>
+								<td>${(item.supplier.supplierId)!}</td>
+								<td>${(item.resellerCount)!}</td>
+								<td><@i18n.msg enumDisplay('au.com.isell.rlm.module.supplier.domain.Supplier$Status',item.supplier.status!'')/></td>
+								<#if (item.billingInfo.renewDate)??>
+									<#assign days=dayDiff(item.billingInfo.renewDate?datetime,0,.now?datetime)>
+									<td ${(days lt 30)?string('class="red"','')}>${days} Days</td>
+								<#else>
+									<td></td>
+								</#if>
+								<td>
+									<#assign addrData=dataLoader('au.com.isell.rlm.module.address.service.AddressService','getAddressItem',(item.headOffice.countryCode)!)>
+									${(addrData.shortName)!}	
+								</td>
+								<td>${(item.headOffice.city)!}</td>
+								<td>
+									<#assign addrData=dataLoader('au.com.isell.rlm.module.address.service.AddressService','getAddressItem',(item.headOffice.region)!)>
+									${(addrData.shortName)!}	
+								</td>
+								<td>${(item.supplier.productCount)!}</td>
+								<td>${(item.supplier.lastImportDate?datetime)!}</td>
+							</tr>
+						</#list>
+					</#if>
+				</table>
+	
+				<div id="pageLinks">
+					<@pagingBar.pagingBar1 paging/>
+				</div>
+			</form>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+</div>
+<@popupDiv.selectCountry/>
+<script type="text/javascript" src="${frame.resourceBasePath}/js/entry/agent/suppliers.js"></script>
+<script type="text/javascript" src="${frame.resourceBasePath}/js/entry/agent/module/supplier/notify-report.js"></script>
+</@frame.main>

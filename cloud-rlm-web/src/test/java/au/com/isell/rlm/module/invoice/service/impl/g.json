@@ -1,0 +1,79 @@
+[{
+	"agentName"	        : "iSell",
+	"monthColumnsDef"	: ["Jun 2011", "Jul 2011", "Aug 2011", "Sep 2011", "Oct 2011", "Nov 2011", "Dec 2011", "Jan 2012", "Feb 2012", "Mar 2012",
+	        "Apr 2012", "May 2012"],
+	"dataGroups"	    : [{
+		        "groupName"		     : "Agent iSell - NewBusiness",
+		        "rowData"		     : [{
+			                "rowName"		: "Gary Henderson",
+			                "monthAmounts"	: ["0", "0", "0", "0", "0", "0", "6", "0", "0", "13,566", "0", "0"],
+			                "rowAmountsSum"	: "13,572"
+		                }, {
+			                "rowName"		: "Richard Beresford",
+			                "monthAmounts"	: ["0", "0", "0", "0", "0", "0", "6", "0", "0", "13,566", "0", "0"],
+			                "rowAmountsSum"	: "13,572"
+		                }],
+		        "colMonthAmountsSum"	: {
+			        "rowName"		: "",
+			        "monthAmounts"	: ["0", "0", "0", "0", "0", "0", "6", "0", "0", "13,566", "0", "0"],
+			        "rowAmountsSum"	: "13,572"
+		        }
+	        }, {
+		        "groupName"		     : "Agent iSell - Renewal",
+		        "rowData"		     : [{
+			                "rowName"		: "Richard Beresford",
+			                "monthAmounts"	: ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "13,566", "0"],
+			                "rowAmountsSum"	: "13,566"
+		                }],
+		        "colMonthAmountsSum"	: {
+			        "rowName"		: "",
+			        "monthAmounts"	: ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "13,566", "0"],
+			        "rowAmountsSum"	: "13,566"
+		        }
+	        }],
+	"total4Agent"	    : {
+		"rowName"		: "Total for iSell",
+		"monthAmounts"	: ["0", "0", "0", "0", "0", "0", "6", "0", "0", "13,566", "13,566", "0"],
+		"rowAmountsSum"	: "27,138"
+	},
+	"lastYear4AgentSum"	: {
+		"rowName"		: "Last Year for iSell",
+		"monthAmounts"	: ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+		"rowAmountsSum"	: "0"
+	},
+	"diffAmount"	    : {
+		"rowName"		: "Difference Amount",
+		"monthAmounts"	: ["0", "0", "0", "0", "0", "0", "6", "0", "0", "13,566", "13,566", "0"],
+		"rowAmountsSum"	: "27,138"
+	},
+	"diffPercentage"	: {
+		"rowName"		: "Difference Percentage",
+		"monthAmounts"	: [null, null, null, null, null, null, "100%", null, null, "100%", "100%", null],
+		"rowAmountsSum"	: "0%"
+	}
+}, {
+	"agentName"	        : "All Agents",
+	"monthColumnsDef"	: ["Jun 2011", "Jul 2011", "Aug 2011", "Sep 2011", "Oct 2011", "Nov 2011", "Dec 2011", "Jan 2012", "Feb 2012", "Mar 2012",
+	        "Apr 2012", "May 2012"],
+	"dataGroups"	    : null,
+	"total4Agent"	    : {
+		"rowName"		: "Total for All",
+		"monthAmounts"	: ["0", "0", "0", "0", "0", "0", "6", "0", "0", "13,566", "13,566", "0"],
+		"rowAmountsSum"	: "27,138"
+	},
+	"lastYear4AgentSum"	: {
+		"rowName"		: "Last Year for All",
+		"monthAmounts"	: ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+		"rowAmountsSum"	: "0"
+	},
+	"diffAmount"	    : {
+		"rowName"		: "Difference Amount",
+		"monthAmounts"	: ["0", "0", "0", "0", "0", "0", "6", "0", "0", "13,566", "13,566", "0"],
+		"rowAmountsSum"	: "27,138"
+	},
+	"diffPercentage"	: {
+		"rowName"		: "Difference Percentage",
+		"monthAmounts"	: [null, null, null, null, null, null, "100%", null, null, "100%", "100%", null],
+		"rowAmountsSum"	: "0%"
+	}
+}]

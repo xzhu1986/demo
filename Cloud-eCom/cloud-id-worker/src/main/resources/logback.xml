@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration  -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user             -->
+<!--                                                                -->
+<!-- For professional support please see                            -->
+<!--    http://www.qos.ch/shop/products/professionalSupport         -->
+<!--                                                                -->
+<configuration>
+	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- Tests run on modern PCs show that buffering related property -->
+		<!-- "ImmediateFlush" has negligible impact and will be ignored.  -->
+		<Target>System.out</Target>
+		<encoder>
+			<!--
+			<pattern> %-4relative [%thread] %-10level %logger{30} - %msg%n</pattern>
+			-->
+			<pattern>%d{HH:mm:ss.SSS} %-5level (%file:%line\) - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+	<appender name="Business" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- Tests run on modern PCs show that buffering related property -->
+		<!-- "ImmediateFlush" has negligible impact and will be ignored.  -->
+		<!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+		<!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
+		<!--for further documentation-->
+		<File>${catalina.base}/logs/id-worker/isell-ws/business.log</File>
+		<Append>true</Append>
+		<encoder>
+			<pattern>%date %-5level [%file:%line] - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<maxIndex>10</maxIndex>
+			<FileNamePattern>${catalina.base}/logs/id-worker/isell-ws/business-%i.bak</FileNamePattern>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>2MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	<appender name="All" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- Tests run on modern PCs show that buffering related property -->
+		<!-- "ImmediateFlush" has negligible impact and will be ignored.  -->
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+		<File>${catalina.base}/logs/id-worker/isell-ws/all.log</File>
+		<Append>true</Append>
+		<encoder>
+			<pattern>%date %-5level [%file:%line] - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<maxHistory>10</maxHistory>
+			<fileNamePattern>${catalina.base}/logs/id-worker/isell-ws/all-%d.bak</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	<appender name="Error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- Tests run on modern PCs show that buffering related property -->
+		<!-- "ImmediateFlush" has negligible impact and will be ignored.  -->
+		<!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+		<!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
+		<!--for further documentation-->
+		<Append>true</Append>
+		<File>${catalina.base}/logs/id-worker/isell-ws/error.log</File>
+		<encoder>
+			<pattern>%date %-5level [%file:%line] - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<maxIndex>10</maxIndex>
+			<FileNamePattern>${catalina.base}/logs/id-worker/isell-ws/error-%i.bak</FileNamePattern>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>2MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	<logger name="BusinessLogger" additivity="false" level="DEBUG">
+		<appender-ref ref="Console"/>
+		<appender-ref ref="Business"/>
+	</logger>
+	<root level="DEBUG">
+		<appender-ref ref="Console"/>
+		<appender-ref ref="All"/>
+		<appender-ref ref="Error"/>
+	</root>
+</configuration>

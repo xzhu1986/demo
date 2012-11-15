@@ -1,0 +1,62 @@
+<#include "/common/frame/global-settings.html">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<#include '/common/resource.html'>
+</head>
+<body>
+	<div id="contentBody">
+		<form action="#" method="post" parent-reload-flag="false" id="auto-schedule-detail-form" autocomplete="off">
+		<input type="hidden" name="invoiceNumber" value='${invoiceNumber}'/>
+		<input type="hidden" id="dataSavedFlag" value='${saved!}'/>
+		<div id="actionBar">
+			<ul>
+				<li><button class="link-btn save-btn">Save</button></li>
+				<li><button class="link-btn" onclick='window.close();return false;'>Cancel</button></li>
+			</ul>
+		</div>
+
+		<div class="commonBox" style="width:100%;">
+			<h2>Auto Generate Payment Schedule</h2>
+			<table>
+				<span id="errorMsg" style="color:red">Total Schedule Amount must equals Invoice Total Amount!</span>
+				<tr>
+					<td>Scheduleds</td>
+					<td><input type="text" name="scheduleds" size=2 reg="^([1-9]|[1-2][0-9]|3[0-6])$" tip="A number from 1 to 36" value="${autoScheduleDesc.scheduleds!}"></td>
+				</tr>
+				<tr>
+					<td>Invoice Total</td>
+					<td><input type="text" size=15 name="invoiceTotalAmount"  class="unmodified" disabled="disabled" value="${autoScheduleDesc.invoiceTotalAmount!}"/>
+					</td>
+				</tr>
+				<tr>
+					<td>First Scheduled Amount</td>
+					<td><input type="text" size=15 name="firstScheduledAmount" value="${autoScheduleDesc.firstScheduledAmount!}" reg="^\d+\.{0,1}\d*$" tip="number"/></td>
+				</tr>
+				<tr>
+					<td>Each Sechedule</td>
+					<td><input type="text" size=15 name="eachSecheduleAmount" value="${autoScheduleDesc.eachSecheduleAmount!}" reg="^\d+\.{0,1}\d*$" tip="number"/></td>
+				</tr>
+				<tr>
+					<td>First Scheduled Date</td>
+					<td>
+						<#if autoScheduleDesc.firstScheduledDate??>
+							<input type="date" size="15" value="${autoScheduleDesc.firstScheduledDate?date}" name="firstScheduledDate" reg="^.+$" tip="not blank" />
+						<#else>
+							<input type="date" size="15" name="firstScheduledDate" reg="^.+$" tip="not blank" />
+						</#if>
+						<input type="button" id="clear-calendar" class="clear-calendar-btn" /></td>
+				</tr>
+				<tr>
+					<td>Day of month for all others</td>
+					<td><input type="text" name="dayOfMonth" size=2 reg="^([1-9]|[1-2][0-9]|30)$" tip="A number from 1 to 30" value="${autoScheduleDesc.dayOfMonth!}"></td>
+				</tr>
+			</table>
+		</div>
+		</form>
+		<div style="clear: both;"></div>
+	</div>
+	<script type="text/javascript" src="${resourceBasePath}/js/entry/agent/module/invoice/invoice-auto-schedule.js"></script>
+</body>
+</html>

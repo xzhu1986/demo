@@ -1,0 +1,48 @@
+<#include '/common/frame/global-settings.html'>
+
+<#macro supplier activeTab>
+<#if supplierId?string=='-1'>
+	<#assign displayTitle='Create Supplier'>
+<#else>
+	<#assign supplier_temp=dataLoader('au.com.isell.rlm.module.supplier.service.SupplierService',"getSupplier",supplierId)>
+	<#assign displayTitle='Supplier: '+supplier_temp.name+' ('+supplier_temp.country?upper_case+')'>
+</#if>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>${displayTitle}</title>
+		<#include '/common/resource.html'>
+	</head>
+	<body>
+		<div id="contentZone">
+			<!--  
+			<div id="headerDate">
+				<p id="date">${.now?string('EEEEEE dd MMM yyyy')}</p>
+			</div>
+			-->
+			<div id="contentContainer">
+				<div id="contentCommon">
+					<h1>${displayTitle}</h1>
+					<div id="navbar">
+						<ul id="navbarCommon">
+							<#if (activeTab?? && activeTab=='details') ><li class="active"><#else><li></#if>
+								<a href="${basePath}/reseller-portal/supplier/${supplierId}/detail">Details</a></li>
+							<#if (activeTab?? && activeTab=='branches') ><li class="active"><#else><li></#if>
+								<a href="${basePath}/reseller-portal/supplier/${supplierId}/branches">Branches</a></li>
+							<li>
+								<a href="${basePath}/logout?userType=${Session.userType!}">Logout</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<#nested>
+			</div>
+		</div>
+		
+		<#include '/reseller-portal/footer.html'>
+	</body>
+</html>
+</#macro>
+
+

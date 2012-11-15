@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<permissionPackage display="View Resellers from these Agencies" orderNo="2">
+	<permissionGroup display="${name}" dynamic='true' dataService="au.com.isell.rlm.module.agent.service.AgentService" dataMethod="getAgencyList">
+		<permission key="reseller:when_agent_${agentId}:view" display="Enabled"/>
+	</permissionGroup>
+</permissionPackage>

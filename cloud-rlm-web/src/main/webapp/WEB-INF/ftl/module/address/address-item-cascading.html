@@ -1,0 +1,10 @@
+<#include "/common/frame/global-settings.html">
+<#if codes??>
+	<#list codes as codePair>
+		<select>
+			<option value=""></option>
+			<#assign dataList=dataLoader('au.com.isell.rlm.module.address.service.AddressService',"getSubItems",codePair[1])> 
+			<@htmlGen.selOptions codePair[0] dataList {"key":"code","display":"name"}/>
+		</select>
+	</#list>
+</#if>

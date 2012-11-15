@@ -1,0 +1,139 @@
+<#include '/common/frame/global-settings.html'>
+<#import "/common/frame/frame.html" as frame>
+<#import "/common/popupDiv.html" as popupDiv>
+
+<@frame.main>
+<div id="content">
+	<@frame.isellNavTabs "resellers"/>
+
+	<div id="contentBody">
+		<div id="sidebar">
+			<div class="surroundingBox">
+				<h2>Filters</h2>
+				<ul id='query-filters'>
+					<#assign dataList=transforEnumToList('au.com.isell.rlm.module.reseller.vo.ResellerSearchFilters',"false")>
+					<#list dataList as dataItem>
+						<#if filter?? && filter?string==dataItem.key?string>
+							<li class="selected"><a href="" data-val='${dataItem.key}' >${dataItem.name}</a></li>
+						<#else>
+							<li><a href="" data-val='${dataItem.key}' >${dataItem.name}</a></li>
+						</#if>
+					</#list>
+				</ul>
+			</div>
+
+			<div class="surroundingBox">
+				<h2>Maintenance</h2>
+				<ul>
+					<@shiro.hasPermission name="reseller:create">
+						<li><a id="select-country" href="#">New Reseller</a></li>
+					</@shiro.hasPermission>
+					<li><a href="">Renewal Report</a></li>
+					<li><a class="notify-btn" href="${basePath}/resellers/notify-reseller/filter-page">Send Bulk Email</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="contentMain">
+			<form action="#" id="reseller-search-form" autocomplete="off">
+				<input type="hidden" name="filter" value='${(filter)!}'/>
+				<table class="maxWidthTable sortable">
+					<tr id="filter">
+						<th width='26%'><input name="company" id="company" title="" type="text" style="width:100%" value='${(company)!}'/></th>
+						<th width="10%"><input name="phone" id="phone" title="" type="text" style="width:100%" value='${(phone)!}'/></th>
+						<th width="6%">
+							<select name="status" id="status" >
+								<option value=""></option>
+								<#assign dataList=transforEnumToList('au.com.isell.rlm.module.reseller.domain.Reseller$ResellerStatus',"true")>
+								<@htmlGen.selOptions status!"Active" dataList {"key":"key","display":"name"}/>
+							</select>	
+						</th>
+						<th width="6%">
+							<select name="country" id="country" style="width:100%">
+								<option value=""></option>
+								<#assign dataList=dataLoader('au.com.isell.rlm.module.address.service.impl.AddressServiceImpl',"getSubItems",'root')>
+								<@htmlGen.selOptions country!'' dataList {"key":"code","display":"name"}/>
+							</select>
+						</th>
+						<th width="6%">
+							<select name="region" id="region"  style="width:100%" data-url="${frame.basePath}/address/sub-addresses/{0}.json" data-value='${(region)!}'>
+								<option value=""></option>
+							</select>
+						<th width="11%"><input name="city" id="city" title="" type="text" style="width:100%" value='${(city)!}'/></th>
+						<th width="8%"><input name="serialNo" id="serialNo" title="" type="text" style="width:100%" value='${(serialNo)!}'/></th>
+						<th width="8%"><input name="version" id="version" title="" type="text" style="width:100%" value='${(version)!}'/></th>
+						<th width="12%"><input name="submit" id="search" type="submit" title="Search" value="" /> <input name="cancel" id="cancel" value="" type="reset" />
+						</th>
+						<th width="8%">
+							<select name="pageSize">
+								<@htmlGen.selOptions (pageSize)!25 pageDataList {"key":"key","display":"value"}/>
+							</select>
+						</th>
+					</tr>
+	
+					<tr id="filterTitle">
+						<td>Company</td>
+						<td>Phone</td>
+						<td>Status</td>
+						<td>Country</td>
+						<td>Region</td>
+						<td>City</td>
+						<td>Serial No</td>
+						<td>Version</td>
+						<td>Renewing</td>
+						<td>Sync</td>
+					</tr>
+					
+					<#if data??>
+						<#list data as item>
+							<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+								<td><a href="${frame.basePath}/resellers/${item.serialNo}/detail" target="_blank">${(item.company)!}</a></td>
+								<td>${(item.phone)!}</td>
+								<td><@i18n.msg enumDisplay('au.com.isell.rlm.module.reseller.domain.Reseller$ResellerStatus',item.status)/></td>
+								<td>
+									<#assign addrData=dataLoader('au.com.isell.rlm.module.address.service.AddressService','getAddressItem',(item.country)!)>
+									${(addrData.shortName)!}
+								</td>
+								<td>
+									<#assign addrData=dataLoader('au.com.isell.rlm.module.address.service.AddressService','getAddressItem',(item.region)!)>
+									${(addrData.shortName)!}
+								</td>
+								<td>${(item.city)!}</td>
+								<td>${item.serialNo}</td>
+								<td>${(item.version)!}</td>
+								<#if item.renewDate??>
+									<#assign days=dayDiff(item.renewDate?datetime,0,.now?datetime)>
+									<td ${(days lt 60)?string('class="red"','')}>
+										<#if days lt 0>
+											Overdue
+										<#else>
+											${item.renewDate?date}
+										</#if>
+									</td>
+								<#else>
+									<td></td>
+								</#if>
+								<#if item.syncDate??>
+									<#assign days=dayDiff(item.syncDate?datetime,0,.now?datetime)>
+									<td ${(days lt 1)?string('class="red"','')}>${days} Days</td>
+								<#else>
+									<td></td>
+								</#if>
+							</tr>
+						</#list>
+					</#if>
+				</table>
+	
+				<div id="pageLinks">
+					<@pagingBar.pagingBar1 paging/>
+				</div>
+			</form>
+		</div>
+
+		<div style="clear: both;"></div>
+	</div>
+</div>
+<@popupDiv.selectCountry/>
+<script type="text/javascript" src="${frame.resourceBasePath}/js/entry/agent/resellers.js"></script>
+<script type="text/javascript" src="${frame.resourceBasePath}/js/entry/agent/module/reseller/notify-report.js"></script>
+</@frame.main>

@@ -1,0 +1,147 @@
+<#include "/common/frame/global-settings.html">
+<div >
+	<form action="${basePath}/resellers/notify-reseller/filter.json" autocomplete="off" id="notify-form">
+		<table  class="maxWidthTable sortable">
+			<caption><h3>Send Bulk Email</h3></caption>
+			<tr>
+				<td>Reseller: </td>
+				<td><input type="text" name="name" value=""></td>
+				<td>Phone: </td>
+				<td><input name="phone" type="text" value=""></td>
+				
+				<td>Country: </td>
+				<td><select name="country" id="country" class="maxWidthSelect">
+						<option value=""></option>
+						<#assign dataList=dataLoader('au.com.isell.rlm.module.address.service.impl.AddressServiceImpl',"getSubItems",'root')>
+						<@htmlGen.selOptions country!'' dataList {"key":"code","display":"name"}/>
+					</select>
+				</td>
+				
+				<td>Supplier: </td>
+				<td><select name="supplierId"  class="maxWidthSelect" id='supplier' >
+						<option value=""></option>
+						<#assign dataList=dataLoader('au.com.isell.rlm.module.supplier.service.SupplierService',"querySuppliersInRSMapOfApproved")> 
+						<@htmlGen.selOptions '' dataList {"key":"supplierId","display":"shortName"}/>
+					</select>
+				</td>
+				
+			</tr>
+
+			<tr>
+				<td>City: </td>
+				<td><input name="city" id="city" title="" type="text"/></td>
+				
+				<td>Email: </td>
+				<td><input name='email' type="text" value=""></td>
+				
+				<td>Region: </td>
+				<td><select name="region" id="region"  class="maxWidthSelect" data-url="${basePath}/address/sub-addresses/{0}.json">
+						<option value=""></option>
+					</select>
+				</td>
+
+				<td>Break: </td>
+				<td><select name="supplierBreakId" id="supplierBreak" class="maxWidthSelect" data-url="${basePath}/supplier/{0}/query-price-breaks.json">
+						<option value=""></option>
+					</select>
+				</td>
+				
+			</tr>
+
+			<tr>
+				<td>Type: </td>
+				<td><select name="type"  class="maxWidthSelect">
+						<option value=""></option>
+						<#assign dataList=transforEnumToList('au.com.isell.rlm.module.reseller.domain.Reseller$ResellerType',"true")>
+						<@htmlGen.selOptions "" dataList {"key":"key","display":"name"}/>
+					</select>
+				</td>
+				
+				<td>Version: </td>
+				<td><input name='version' type="text" value=""></td>
+				
+				<td>Agency: </td>
+				<td><select name='agencyId' id='agencyId' class="maxWidthSelect">
+					<option value=""></option>
+					<#assign dataList=dataLoader('au.com.isell.rlm.module.agent.service.AgentService',"getAgencyList")> 
+					<@htmlGen.selOptions '' dataList {"key":"agentId","display":"name"}/>
+				</select>
+				</td>
+				
+				<td></td><td></td>
+			</tr>
+
+			<tr>
+				<td>Status: </td>
+				<td><select name='status' class="maxWidthSelect">
+						<option value=""></option>
+							<#assign dataList=transforEnumToList('au.com.isell.rlm.module.reseller.domain.Reseller$ResellerStatus',"true")>
+						<@htmlGen.selOptions status!"Active" dataList {"key":"key","display":"name"}/>
+					</select>
+				</td>
+				
+				<td></td><td></td>
+				
+				<td>Sales Rep: </td>
+				<td><select name='salesRepID' id='salesRepID' class="maxWidthSelect" data-url='${basePath}/users/sales-repos/{0}.json'>
+					</select>
+				</td>
+				
+				<td></td><td></td>
+				
+				<!-- <td>Approve Status: </td>
+				<td><select name="rsmStatus"  class="maxWidthSelect">
+						<option value=""></option>
+						<#assign dataList=transforEnumToList('au.com.isell.rlm.module.reseller.domain.ResellerSupplierMap$ApprovalStatus',"true")>
+						<@htmlGen.selOptions "" dataList {"key":"key","display":"name"}/>
+					</select>
+				</td> -->
+			</tr>
+
+			<tr>
+				<td>Template: </td>
+				<td colspan="3">
+					<select name="emailType"  id="emailType" class="maxWidthInput">
+						<option value=""></option>
+						<#assign dataList=dataLoader('au.com.isell.rlm.module.mail.service.EmailTemplateService',"queryNotifyEmailTemplates","","Resellers")> 
+						<@htmlGen.selOptions '' dataList {"key":"typeId","display":"typeName"}/>
+					</select> 
+				</td>
+			</tr>
+			
+			<tr>
+				<td>Subject: </td>
+				<td colspan="3"><input type="text" name="subject" id="subject" class="maxWidthInput"></td>
+			</tr>
+			
+			<tr>
+				<td>Sender: </td>
+				<td colspan="3"><input type="text" name="senderEmail" reg='(.+@.+\..+)?' id="sender" class="maxWidthInput"></td>
+			</tr>
+
+			<tr>
+				<td colspan="7"><input type="checkbox" name="recoveryMode">Don't send to anyone who has received this template today.
+				</td>
+				<td class="textRightAligned">
+					<button class='link-btn'>Search</button>&nbsp;
+					<button class='link-btn' type="button" id="sendNotifyEmail" data-url='${basePath}/resellers/notify-reseller/email.json'>Send</button>
+				</td>
+			</tr>
+			
+			<tr>
+				
+			</tr>
+		</table>
+
+		<table  id="notify-table" class="maxWidthTable sortable withBorder">
+			<thead>
+				<tr>
+					<th style="width: 5%"></th>
+					<th style="width: 50%">Name</th>
+					<th style="width: 45%">Email</th>
+				</tr>
+			</thead>
+			
+		</table>
+	</form>
+</div>

@@ -1,0 +1,188 @@
+<#import "/reseller-portal/resellerFrame.html" as rframe> 
+<#include '/common/frame/global-settings.html'>
+
+<@rframe.reseller "jobs">
+<div id="content">
+	<div id="contentBody">
+		<div id="actionBar">
+			<@shiro.hasPermission name="resellerportal:create_edit_job">
+			<ul class="rightAligned">
+				<li><button class="link-btn" id='add-note' data-url='${basePath}/reseller-portal/jobs/${jobDetail.jobId}/note'>Add Note</button></li>
+			</ul>
+			</@shiro.hasPermission>
+		</div>
+		
+		<div class="autoWithCommonBox">
+			<h2>Details for Job ${(jobDetail.jobId)!}</h2>	
+			<div style="float: left; margin-right: 150px;">		
+				<table>
+					<tr>
+						<td>Job&nbsp;Name</td>
+						<td><input disabled="disabled" type="text" class='unmodified' size="45" value="${(jobDetail.jobName)!}" name="jobName" /></td>
+						
+						<td>Type</td>
+						<td><select name='typeID' disabled="disabled"  class='unmodified' style="width: 130px;">
+								<#assign dataList=dataLoader('au.com.isell.rlm.module.jbe.service.JobService',"getJobTypes")> 
+								<@htmlGen.selOptions jobDetail.typeID!'' dataList {"key":"typeId","display":"typeName"}/>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Job&nbsp;Status
+						</td>
+						<td colspan='3'>
+							<input disabled="disabled" type="text" class='unmodified' size="73" value="Status: <@i18n.msg enumDisplay('au.com.isell.rlm.module.jbe.domain.JobStatus',(jobDetail.statusId?number-1))/>, Created ${(jobDetail.createdDateTime?date('yyyy-MM-dd HH:mm:ss')?date)!} by ${(jobDetail.createdName)!}" name="jobName" />
+						</td>
+					</tr>
+					<tr>
+						<td style="vertical-align: top;">
+							Description
+						</td>
+						<td colspan='3'>
+							<textarea disabled="disabled" rows="10" style="width: 99%;">${(jobDetail.description)!}</textarea>
+						</td>
+					</tr>
+					<#if jobDetail.resolution??>
+					<tr>
+						<td style="vertical-align: top;">
+							Resolution /<br />How to Fix
+						</td>
+						<td colspan='3'>
+							<textarea disabled="disabled" rows="5" style="width: 99%;">${(jobDetail.resolution)!}</textarea>
+						</td>
+					</tr>
+					</#if>
+				</table>
+			</div>
+			
+			<div class="commonBox">		
+				<table>
+					<tr>
+						<td>Contact</td>
+						<td><input disabled="disabled" type="text" class='unmodified' size="15" value="${(jobDetail.contactName)!}" name="" /></td>
+					</tr>
+					<tr>
+						<td>Phone</td>
+						<td><input disabled="disabled" type="text" class='unmodified' size="15" value="${(jobDetail.contact_phone)!}" name="" /></td>
+					</tr>
+					<tr>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td>Job Priority</td>
+						<td><select name="priority" disabled="disabled" class='unmodified' style="width: 135px;">
+								<#assign dataList=transforEnumToList('au.com.isell.rlm.module.jbe.domain.JobPriority',"true","true")>
+								<@htmlGen.selOptions jobDetail.jobPriority!'' dataList {"key":"key","display":"name"}/>
+							</select>	
+						</td>
+					</tr>
+					<tr>
+						<td>Allocated To</td>
+						<td><input disabled="disabled" type="text" class='unmodified' size="15" value="${(jobDetail.allocatedTo)!}" name="" /></td>
+					</tr>
+					<tr>
+						<td>Job Owner</td>
+						<td><input disabled="disabled" type="text" class='unmodified' size="15" value="${(jobDetail.ownedBy)!}" name="" /></td>
+					</tr>
+					<tr>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td>Date Started</td>${jobDetail.startDateTime!}
+						<#if jobDetail.startDateTime?? && jobDetail.startDateTime?trim!=""><#assign dateStarted=jobDetail.startDateTime?date("yyyy-MM-dd HH:mm:ss")?date></#if>
+						<td><input disabled="disabled" type="text" class='unmodified' size="15" value="${(dateStarted)!}" name="" /></td>
+					</tr>
+					<tr> 
+						<td>Date Completed</td>
+						<#if jobDetail.finishedDateTime?? && jobDetail.finishedDateTime?trim!=""><#assign dateCompleted=jobDetail.finishedDateTime?date("yyyy-MM-dd HH:mm:ss")?date></#if>
+						<td><input disabled="disabled" type="text" class='unmodified' size="15" value="${(dateCompleted)!}" name="" /></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div style="clear: both;"></div>
+		</div>
+		
+		<#if tasks??>
+		<div class="autoWithCommonBox">
+			<h2>Tasks</h2>	
+			<table id="" class="maxWidthTable sortable">
+				<tr id="filterTitle">
+					<th width="70%">Task</th>
+					<th width="10%">Allocated To</th>
+					<th width="10%">Status</th>
+					<th width="10%" class="textRightAligned">Date Completed</th>
+				</tr>
+				<#list tasks as item>
+					<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+						<#if item.altTaskNumber?? && item.altTaskNumber?trim!="">
+							<td>${(item.taskName)!}
+								<#if item.taskDescription?? && item.taskDescription?trim!="">
+									<a class="normal descriptionLink rightAligned clickable" id="descriptionLink${item_index}" onclick="javascript:$('#description${item_index}').show();$('#descriptionLink${item_index}').hide();$('#descriptionLinkHide${item_index}').show();" title="View full note">View Description</a>
+									<a class="normal descriptionLink rightAligned clickable" id="descriptionLinkHide${item_index}" onclick="javascript:$('#description${item_index}').hide();$('#descriptionLink${item_index}').show();$('#descriptionLinkHide${item_index}').hide();" title="View Brief note"  style="display:none;">Hide Description</a><br />
+									<span class="taskDetails" id="description${item_index}" style="display:none;"><pre>${item.taskDescription}</pre></span>
+								</#if>
+							</td>
+							<td class="topAligned">${(item.allocatedTo)!}</td>
+							<td class="topAligned"><@i18n.msg enumDisplay('au.com.isell.rlm.module.jbe.domain.TaskStatus',(item.taskStatus?number-1))/></td>
+							<#if item.endDateTime?? && item.endDateTime?trim!="">
+								<#assign dateCompleted=item.endDateTime?date("yyyy-MM-dd HH:mm:ss")?date>
+							<#else>
+								<#assign dateCompleted=''>
+							</#if>
+							<td class="textRightAligned topAligned">${dateCompleted!}</td>
+						<#else>
+							<td><h3>${(item.taskName?replace('-',''))!}</h3></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</#if>
+					</tr>
+				</#list>
+			</table>
+		</div>
+		</#if>
+		
+		<div class="autoWithCommonBox">
+			<h2>Notes</h2>	
+			<#if notes??>		
+				<table id="" class="maxWidthTable sortable">
+					<tr id="filterTitle">
+						<th width="30%">Date</th>
+						<th width="70%">Description</th>
+					</tr>
+					<#list notes as item>
+						<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+							<td class="topAligned">${(item.createdDateTime?date("yyyy-MM-dd HH:mm:ss")?string("EEE, dd MMMM yyyy 'at' hh:mm"))!} by ${(item.createdName)!}</td>
+							<td>
+								<#if (item.noteBriefDesc?? && item.note?? && item.noteBriefDesc==item.note) || !item.note??>
+								${item.noteBriefDesc!}
+								<#else>
+									<span id="noteBrief${item_index}">${item.noteBriefDesc!}</span>
+								<a class="normal descriptionLink rightAligned clickable" id="noteLinkMore${item_index}" onclick="javascript:$('#noteFull${item_index}').show();$('#noteBrief${item_index}').hide();$('#noteLinkMore${item_index}').hide();$('#noteLinkLess${item_index}').show();" title="View full note">Show More</a>
+									
+								<span class="taskDetails" id="noteFull${item_index}" style="display:none;">
+								<a class="normal descriptionLink rightAligned clickable" id="noteLinkLess${item_index}" onclick="javascript:$('#noteFull${item_index}').hide();$('#noteBrief${item_index}').show();$('#noteLinkMore${item_index}').show();$('#noteLinkLess${item_index}').hide();" title="View Brief note" style="display:none;">Show Less</a>
+								<pre style="display: inline;">${(item.note)!}</pre>								
+								</span>
+								</#if>
+							</td>
+						</tr>
+					</#list>
+				</table>
+			<#else>
+				<div>There are no notes for this Job.</div>
+			</#if>
+		</div>
+		
+		<div style="clear: both;"></div>
+	</div>
+</div>
+
+<script type="text/javascript" src='${rframe.resourceBasePath}/js/entry/reseller-portal/jobs/job-detail.js'></script>
+</@rframe.reseller>

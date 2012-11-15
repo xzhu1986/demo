@@ -1,0 +1,511 @@
+html {
+	margin: 0;
+	padding: 0;
+	background: #F4F7FA;
+	font: 16px/18px Calibri;
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+a {
+	color: #000000;
+	text-decoration: none;
+}
+
+a:hover, a:active {
+	text-decoration: underline;
+}
+
+pre, p, ul, li, th, td, #contentZone {
+	font: 16px/18px Calibri;
+	margin: 0;
+}
+
+h1, h2, h3, form {
+	margin: 0;
+}
+
+.linkWithUnderline {
+	text-decoration: underline !important;
+}
+
+.maxWidthInput {
+	width: 100% !important;
+}
+
+.maxWidthTable {
+	width: 100%;
+}
+
+.maxWidthSelect {
+	width: 100%;
+}
+
+.withBorder {
+	border: 2px solid #000000;
+	border-collapse: collapse;
+}
+
+.withBorder th, .withBorder td {
+	border: 2px solid #000000;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.red {
+	color: red !important;
+}
+
+.blue {
+	color: #7092be !important;
+	text-decoration: underline !important;
+}
+
+.bold {
+	font-weight: bold !important;
+}
+
+.increasedLineHeight,
+.increasedLineHeight td {
+	font: 18px/25px Calibri !important;
+}
+
+.taskDetails {
+    color: #696969;
+    font: 15px/18px Calibri !important;
+}
+
+.descriptionLink {
+    font: bold 12px/12px Calibri !important;
+}
+
+.disabled {
+	background: #eeeeee;
+	border: 1px solid #d5d5d5;
+}
+
+.rightAligned {
+	float: right !important;
+}
+
+.textCenterAligned {
+	text-align: center !important;
+}
+
+.textRightAligned {
+	text-align: right !important;
+}
+
+.topAligned {
+	vertical-align: top !important;
+}
+
+.selected {
+	text-decoration: underline !important;
+}
+
+.clickable:hover,
+.clickable:active {
+	cursor: pointer !important;
+}
+
+#contentZone {
+	width: auto;
+	min-width: 1200px;
+	min-height: 93%;
+}
+
+#headerDate {
+	height: 40px;
+	background: #1F3D4F;
+	padding: 0 10px;
+	color: #ffffff;
+}
+
+#date {
+	text-align: right;
+	margin: 0;
+	font: 15px/40px Arial;
+}
+
+#contentContainer {
+	min-height: 500px;
+	min-width: 1200px;
+	background: #F4F7FA;
+	padding: 0 0 10px 0;
+}
+
+.contentContainerLogin {
+	background: #F4F7FA !important;
+}
+
+#contentCommon {
+	color: #ffffff;
+	padding: 0 10px;
+	height: 70px;
+	background: #1F3D4F;
+	border-bottom: 1px solid #CFDBEC;
+}
+
+.contentCommonLogin {
+	background: #1f3d4f !important;
+}
+
+#contentCommon a {
+	color: #ffffff;
+}
+
+#contentCommon h1 {
+	font: 50px Calibri;
+	float: left;
+	background: url("../media/iSell_logo_white.png") no-repeat scroll 0 70% transparent;
+	padding: 6px 0 0 100px;
+}
+
+.contentCommonLogin h1 {
+	background: url("../media/iSell_logo_white.png") no-repeat scroll 0 70% transparent !important;
+}
+
+#contentCommon p {
+	float: right;
+	margin: 5px 0 0 0;
+}
+
+#contentLogin {
+	background: #ffffff;
+	margin: 0 10px;
+	min-height: 300px;
+	padding: 10px;	
+}
+#contentResetPwd {
+	background: #ffffff;
+	margin: 0 10px;
+	min-height: 300px;
+	padding: 10px;	
+}
+#contentLogicError {
+	background: #000000;
+	margin: 0 10px;
+	min-height: 300px;
+	padding: 10px;	
+}
+
+#loginForm {
+	margin: 50px 10px 0 10px;
+}
+
+#loginForm td {
+	color: #000000;
+	line-height: 1.5em;
+}
+
+#loginForm input[type='text'],#loginForm input[type='password'] {
+	width: 200px;
+	height: 20px;
+}
+
+#loginForm input#submit {
+	width: auto;
+	height: 25px;
+	border: 1px solid #ffffff;
+	background: #000000;
+	color: #ffffff;
+	font: 15px Arial;
+}
+
+#navbar {
+	background: #0374de;
+	height: 30px;
+	padding: 0;
+}
+
+#navbarCommon li {
+	float: left;
+	min-width: 120px;
+	height: 30px;
+	background: #000000;
+	margin: 0 5px 0 0;
+}
+
+#navbarCommon li a {
+	text-decoration: none;
+	color: #ffffff;
+	font: 20px/30px Calibri;
+	display: block;
+	padding: 0 10px;
+}
+
+#navbarCommon li.active {
+	background: #ffffff;
+}
+
+#navbarCommon li.active a {
+	color: #000000;
+}
+
+#content {	
+	margin: 0 10px;
+	border-top: 1px solid #6E7E87;
+}
+
+#contentBody {
+	padding: 10px;
+	min-height: 500px;
+}
+
+#sidebar {
+	float: left;
+	width: 180px;
+	padding: 10px 0 0 0;
+}
+
+#welcome {
+	border-bottom: 1px solid #d5d5d5;
+	padding: 10px 0;
+	width: 500px;
+}
+
+.ulSummary {
+	border-bottom: 1px solid #d5d5d5;
+	padding: 10px 0;
+	width: 500px;
+}
+
+.ulSummary li div {
+	width: 100px;
+}
+
+#resellersTable {
+	width: 500px;
+}
+
+#actionBar {
+	border-bottom: 1px solid #eeeeee;
+	height: 30px;
+	margin: 0 0 10px 0;
+}
+
+#contentMain {
+	width: auto;
+	margin: 0 0 0 200px;
+	zoom:1;
+}
+
+.resellers-suppliers,
+.suppliers-priceBreaks {
+}
+
+#filter {
+	width: 100%;
+}
+
+.surroundingBox {
+	margin: 0 0 10px 0;
+}
+
+.surroundingBox h2 {
+	background: #eeeeee;
+	border: 1px solid #d5d5d5;
+	font: 20px Calibri;
+	padding: 0 5px;
+}
+
+.surroundingBox ul {
+	padding: 0 7px;
+}
+
+.surroundingBox ul li {
+	border-bottom: 1px solid #d5d5d5;
+}
+
+.surroundingBox ul li a {
+	font: 15px/18px Calibri;
+	color: #000000;
+	text-decoration: none;
+}
+
+#actionBar ul li {
+	float: left;
+	height: 30px;
+}
+
+#actionBar ul li button {
+	margin: 0 10px;
+}
+#actionBar ul li a {
+	margin: 0 10px;
+}
+#actionBar ul li a {
+	font: 18px/30px Calibri;
+	color: #000000;
+	text-decoration: none;
+}
+
+.maxWidthTable th, .maxWidthTable td {
+	padding: 2px 3px;
+	text-align: left;
+}
+
+.maxWidthTable th input {
+	border: 1px solid #d5d5d5;
+}
+
+#resellerFilter {
+	padding: 10px 0;
+}
+
+#resellerFilter input {
+	border: 1px solid #d5d5d5;
+}
+
+.maxWidthTable tr#filterTitle {
+	background: #777777;
+	color: #ffffff;
+}
+
+.maxWidthTable tr.pajamaLine {
+	background: #ebebeb;
+} 
+
+.commonBox h2, 
+.wideCommonBox h2, 
+.autoWithCommonBox h2 {
+	background: #eeeeee;
+	border: 1px solid #d5d5d5;
+	font: 20px Calibri;
+	padding: 0 5px;
+	margin: 5px 0;
+}
+
+.commonBox {
+	width: 30%;
+	float: left;
+	margin: 0 35px 0 0;
+}
+
+.wideCommonBox {
+	float: left;
+	width: 40% !important;
+}
+
+.autoWithCommonBox {
+	width: auto !important;
+}
+
+.commonBox td {
+	font: 18px/18px Calibri;
+	padding: 0 5px 0 0;
+}
+
+.commonBox table td input,
+.commonBox table td select {
+	border: 1px solid #d5d5d5;
+	color: #000000;
+	font: 15px/15px Calibri;
+	height: 20px;
+}
+
+.commonBox table td input[type=checkbox] {
+	margin: 0 3px;
+	height: 10px;
+}
+
+.commonBox table td select {
+	min-width: 105px;
+}
+
+.permission-setting table {
+	margin: 0 0 15px 0 !important;
+}
+
+#permission-setting {
+	min-width: 440px;	
+}
+
+#search {
+	background: url(../media/search.png) no-repeat;
+	border: none !important;
+}
+
+#search:hover {
+	cursor: pointer;
+}
+
+#cancel {
+	background: url(../media/cancel.png) no-repeat;
+	border: none !important;
+}
+
+#cancel:hover {
+	cursor: pointer;
+}
+
+#email {
+	background: url(../media/email.png) no-repeat;
+	border: none;
+}
+
+#email:hover {
+	cursor: pointer;
+}
+
+#refresh {
+	background: url(../media/refresh.png) no-repeat;
+	border: none;
+}
+
+#refresh:hover {
+	cursor: pointer;
+}
+
+#calendar {
+	background: url(../media/cancel.png) no-repeat;
+	border: none;
+}
+
+#calendar:hover {
+	cursor: pointer;
+}
+#clear-calendar {
+	background: url(../media/cancel.png) no-repeat;
+	border: none;
+}
+
+#clear-calendar:hover {
+	cursor: pointer;
+}
+
+#previewAttachment {
+	background: url(../media/form_preview.png) no-repeat scroll 0 50% transparent;
+	padding: 0 0 0 15px;
+	margin-right: 10px;
+}
+
+#previewAttachment:hover {
+	cursor: pointer;
+}
+
+#sendEmail {
+	background: url(../media/form_email.png) no-repeat scroll 0 50% transparent;
+	padding: 0 0 0 15px;
+}
+
+#sendEmail:hover {
+	cursor: pointer;
+}
+
+.total-counts-of-country{
+	font-weight: bold;
+}
+.total-counts-of-country td,.total-counts-of-country a{
+	font-weight: bold;
+}

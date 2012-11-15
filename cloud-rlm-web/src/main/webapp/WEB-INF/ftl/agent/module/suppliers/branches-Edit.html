@@ -1,0 +1,139 @@
+<#import "/agent/module/suppliers/supplierFrame.html" as sframe>
+<#import "/module/address/address.html" as addr>
+<#import "/common/utils/html-generator.html" as htmlGen>
+<#assign transforEnumToList = "au.com.isell.rlm.common.freemarker.func.EnumToList"?new()>
+<#assign dataLoader = "au.com.isell.rlm.common.freemarker.func.DataLoader"?new()>
+
+<@sframe.supplier>
+<div id="content">
+	<@sframe.supplierNavTabs "branches"/>
+	<div id="contentBody">
+		<form action="#" method="post" id="branch-form" autocomplete="off">
+			<input type="hidden" name="branch.country" value="${(branch.country)!}">
+			<div id="actionBar">
+				<ul>
+					<@shiro.hasPermission name="supplier:branch:edit">
+						<li><button class="link-btn edit-btn" type="button">Edit</button></li>
+						<li><button class="link-btn save-btn">Save</button></li>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="supplier:branch:delete">
+					<#if (branch.branchId)?? >
+						<li><a href="#" data-confirm-msg="Delete this branch?" data-url="${sframe.basePath}/supplier/${supplierId}/branches/${branch.branchId}.json" class="delete-btn">Delete</a></li>
+					</#if>
+					</@shiro.hasPermission>
+					<li><button type="button" class="link-btn go-back-btn not-hide-btn">Cancel</button></li>
+				</ul>
+			</div>
+			
+			<div class="commonBox">
+				<h2>Branch Details</h2>
+				<table>
+					<tr>
+						<td>Branch Name</td>
+						<td><input type="text" size="30" name="branch.name" value="${(branch.name)!}" reg="^.+$" tip="not blank" /></td>
+					</tr>
+					
+					<tr>	
+						<td>Status</td>
+						<td><select name="branch.status">
+								<#assign resellerTypeDataList=transforEnumToList('au.com.isell.rlm.module.supplier.domain.SupplierBranch$Status',"false")> 
+								<@htmlGen.selOptions (branch.status)!'' resellerTypeDataList {"key":"key","display":"name"}/>
+						</select></td>
+					</tr>
+					<#-- import the address --> 
+					<#assign addressVal= branch.address>
+					<@addr.address branch.country 'address' addressVal />
+					
+					<tr class="rs-phone">
+						<td>Phone</td>
+						<td>
+							<input class="disabled unmodified phone-prefix" disabled="disabled" type="text" size="1" value="${(phonePrefix)!}"/> 
+							<input type="text" size="10" value='${(branch.phone)!}' name="branch.phone" class="phone-number" />
+						</td>
+					</tr>
+					
+					<tr class="rs-phone">
+						<td>International</td>
+						<td>
+							<input class="disabled unmodified phone-prefix" disabled="disabled" type="text" size="1" value="${(phonePrefix)!}"/> 
+							<input type="text" size="10" value='${(branch.international)!}' name="branch.international" class="phone-number" />
+						</td>
+					</tr>
+					
+					<tr>	
+						<td>Fax</td>
+						<td>
+							<input class="disabled unmodified phone-prefix" disabled="disabled" type="text" size="1" value="${(phonePrefix)!}"/> 
+							<input type="text" size="10" value='${(branch.fax)!}' name="branch.fax" class="phone-number" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="commonBox">
+				<h2>Postal Address</h2>
+				<table>
+					<tr>	
+						<td>Address</td>
+						<td>
+							<input type="hidden" name="postalAddress.region" value="${(branch.postalAddress.region)!}">
+							<input type="text" size="25" name="postalAddress.address1" value="${(branch.postalAddress.address1)!}"/></br>
+							<input type="text" size="25" name="postalAddress.address2" value="${(branch.postalAddress.address2)!}"/></br>
+							<input type="text" size="25" name="postalAddress.address3" value="${(branch.postalAddress.address3)!}"/></br>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>City</td>
+						<td><input type="text" size="15" name="postalAddress.city" value="${(branch.postalAddress.city)!}" /></td>
+					</tr>
+					
+					<tr>
+						<td>Zip/Postcode</td>
+						<td><input type="text" size="10" name="postalAddress.postcode" value="${(branch.postalAddress.postcode)!}" /></td>
+					</tr>
+					
+					<tr>
+						<td><br /></td>
+						<td><br /><a class="blue postal-copy-btn" href="#">Copy from Main</a></td>
+					</tr>
+				</table>      
+			</div>
+			
+			<div class="commonBox">
+				<h2>Warehouse Address</h2>
+				<table>
+					<tr>	
+						<td>Address</td>
+						<td>
+							<input type="hidden" name="warehouseAddress.region" value="${(branch.warehouseAddress.region)!}">
+							<input type="text" size="25" name="warehouseAddress.address1" value="${(branch.warehouseAddress.address1)!}"/></br>
+							<input type="text" size="25" name="warehouseAddress.address2" value="${(branch.warehouseAddress.address2)!}"/></br>
+							<input type="text" size="25" name="warehouseAddress.address3" value="${(branch.warehouseAddress.address3)!}"/></br>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>City</td>
+						<td><input type="text" size="15" name="warehouseAddress.city" value="${(branch.warehouseAddress.city)!}" /></td>
+					</tr>
+					
+					<tr>
+						<td>Zip/Postcode</td>
+						<td><input type="text" size="10" name="warehouseAddress.postcode" value="${(branch.warehouseAddress.postcode)!}" /></td>
+					</tr>
+					
+					<tr>
+						<td><br /></td>
+						<td><br /><a class="blue warehouse-copy-btn" href="#">Copy from Main</a></td>
+					</tr>
+				</table>        
+			</div>
+		</form>	
+		<div style="clear: both;"></div>
+	</div>
+
+</div>
+<script type="text/javascript" src="${sframe.resourceBasePath}/js/entry/agent/module/supplier/branchEdit.js"></script>
+<script type="text/javascript" src="${sframe.resourceBasePath}/js/module/address/choose.js"></script>
+</@sframe.supplier>

@@ -1,0 +1,44 @@
+	<#include "/common/frame/global-settings.html">
+	<form action="${basePath}/invoice/quick-create/${serialNo}.json?businessType=${businessType}" method="post" id='renewalInvoiceForm'>
+		<table>
+			<caption><@i18n.msg enumDisplay('au.com.isell.rlm.module.invoice.domain.Invoice$BusinessType',businessType)/></caption>
+			<#list data as item>
+				<tr class="data-row">
+					<#assign licenseTypeName=item.name>					
+					
+					<#if (item.value.renewalDate)??>
+						<td>${licenseTypeName}</td>
+						<td><#if item.value??>${item.value.renewalDate?date}</#if></td>
+						<td><input type="text" size="10" value="${(item.value.annualFee)!}" name="${item.key}" reg="^\d*\.{0,1}\d*$" tip="number" class="annualFee"/></td>
+						<td><input type="checkbox" class="annualFeeCheck"/></td>
+					
+					<#else>
+						<td>${licenseTypeName}</td>
+						<td></td>
+						<td><input type="text" size="10"  name="${item.key}" reg="^\d*\.{0,1}\d*$" tip="number" class="annualFee" disabled="disabled"/></td>
+						<td><input type="checkbox" class="annualFeeCheck" disabled="disabled"/></td>
+					
+					</#if>
+				</tr>
+			</#list>
+			<tr>
+				<td></td>
+				<td>Total ${currency!}</td>
+				<td id="totalAmount"></td>
+				<td></td>
+			</tr>
+			<#if (businessType='NewBusiness' && !hasInoivce) || (businessType='Renewal' && hasInoivce)>
+				<tr  class="nextRenewal">
+					<td colspan="2">Next Renewal</td>
+					<#if renewDate??><#assign rdate=renewDate?date></#if>
+					<td><input type="date" name="nextRenewal" value="${rdate!}"/></td>
+					<td><input type="checkbox" id="nextRenewalCheckBox"/></td>
+				</tr>
+			</#if>
+			<tr>
+				<td>
+					<button id="submitRenewalInvoice" type='button'>Create Inoivce</button>
+				</td>
+			</tr>
+		</table>
+	</form>

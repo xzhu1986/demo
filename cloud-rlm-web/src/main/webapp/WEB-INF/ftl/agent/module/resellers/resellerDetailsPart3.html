@@ -1,0 +1,61 @@
+<#assign userType=Session.user.type>
+<div class="commonBox">
+				<h2>Billing Information</h2>
+				<table>
+					<tr>
+						<td>First Name</td>
+						<td><input type="text" size="15" value="${(billingInfo.firstName)!}" name="billingInfo.firstName"/></td>
+					</tr>
+
+					<tr>
+						<td>Last Name</td>
+						<td><input type="text" size="15" value="${(billingInfo.lastName)!}" name="billingInfo.lastName"/></td>
+					</tr>
+
+					<tr class="rs-phone">
+						<td>Phone</td>
+						<td>
+							<input class="disabled unmodified phone-prefix" type="text" size="1" value="${(phonePrefix)!}"/> <input type="text" size="10"
+							value='${(billingInfo.phone)!}' name="billingInfo.phone" class="phone-number" />
+						</td>
+					</tr>
+
+					<tr>
+						<td>Job Position</td>
+						<td><input type="text" size="25" value="${(billingInfo.jobPosition)!}" name="billingInfo.jobPosition"/></td>
+					</tr>
+
+					<tr>
+						<td>Email Address</td>
+						<td><input type="text" size="25" value="${(billingInfo.email)!}" name="billingInfo.email" data-old-val="${(billingInfo.email)!}" reg="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/></td>
+					</tr>
+
+					<tr>
+						<td>Additional Email</td>
+						<td><input type="text"  size="25" value="${(billingInfo.additionalEmail)!}" name="billingInfo.additionalEmail"/></td>
+					</tr>
+					<#if (userType!='Reseller') >
+					<tr>
+						<td>Currency</td>
+						<td><select  name="billingInfo.currency">
+								<#assign dataList=dataLoader('au.com.isell.rlm.module.system.service.SystemService',"getCurrencies")> 
+								<@htmlGen.selOptions (billingInfo.currency)!'null' dataList {"key":"code","display":"name"}/>
+							</select></td>
+					</tr>
+
+					<tr>
+						<td>GST/Tax</td>
+						<td><select  name="billingInfo.gst" id='gst'>
+								<#assign dataList=dataLoader('au.com.isell.rlm.common.services.FinancialDataService',"getGstValsByCountry",(reseller.country)!)> 
+								<@htmlGen.selOptions (billingInfo.gst)!'null' dataList {"key":"key","display":"value"}/>
+							</select></td>
+					</tr>
+					
+					<tr>
+						<td class="topAligned">Comments</td>
+						<td><textarea rows="10" cols="35" name="billingInfo.comments">${(billingInfo.comments)!}</textarea></td>
+					</tr>
+					</#if>
+				</table>
+
+			</div>

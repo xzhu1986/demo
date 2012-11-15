@@ -1,0 +1,72 @@
+<#include "/common/frame/global-settings.html">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<#include '/common/resource.html'>
+</head>
+<body>
+	<div id="contentBody">
+		<form action="#" method="post" parent-reload-flag="false" id="followup-detail-form" autocomplete="off">
+		<input type="hidden" name="invoiceNumber" value='${invoiceNumber}'/>
+		<input type="hidden" id="dataSavedFlag" value='${saved!}'/>
+		<div id="actionBar">
+			<ul>
+				<#if followupDate=="new"><li><button class="link-btn save-btn">Save</button></li></#if>
+				<li><button class="link-btn" onclick='window.close();return false;'>Cancel</button></li>
+			</ul>
+		</div>
+		<#if followupDate!="new"><#assign disableStr = "disabled='disabled'"><#else><#assign disableStr = ""></#if>
+		
+		<div class="commonBox" style="width:100%;">
+			<h2>Payment Followup</h2>
+			<table>
+				<tr>
+					<td>User</td>
+					<td>
+						<select name="userId" ${disableStr!}>
+							 <#assign
+								dataList=dataLoader('au.com.isell.rlm.module.user.service.UserService',"getAgentUserList")> 
+								<@htmlGen.selOptions (followup.userId)!'null' dataList {"key":"userId","display":"username"}/>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Followup Date</td>
+					<td>
+						<#if followup.followupDate??>
+							<input type="date" size="15" value="${followup.followupDate?date}" name="followupDate" reg="^.+$" tip="not blank" ${disableStr!} url="${basePath}/invoice/${invoiceNumber}/followup/check-duplicate.json"/>
+						<#else>
+							<input type="date" size="15" name="followupDate" reg="^.+$" tip="not blank" ${disableStr!} url="${basePath}/invoice/${invoiceNumber}/followup/check-duplicate.json"/>
+						</#if>
+						<input type="button" id="clear-calendar" class="clear-calendar-btn" /></td>
+				</tr>
+				<tr>
+					<td>Payment Type</td>
+					<td>
+						<select name="results" ${disableStr!}>
+							<#assign resultsDataList=transforEnumToList('au.com.isell.rlm.module.invoice.domain.InvoiceFollowups$FollowupResult',"false")> 
+							<@htmlGen.selOptions followup.results!'null' resultsDataList {"key":"key","display":"name"}/>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Additional Notes</td>
+					<td><textarea rows="5" cols="30" name="additionalNotes" ${disableStr!}>${followup.additionalNotes!}</textarea></td>
+				</tr>
+				<tr>
+					<td>Email Subject</td>
+					<td><textarea rows="5" cols="30" name="emailSubject" ${disableStr!}>${followup.emailSubject!}</textarea></td>
+				</tr>
+				<tr>
+					<td>Email Body</td>
+					<td><textarea rows="5" cols="30" name="emailBody" ${disableStr!}>${followup.emailBody!}</textarea></td>
+				</tr>
+			</table>
+		</div>
+		</form>
+		<div style="clear: both;"></div>
+	</div>
+	<script type="text/javascript" src="${resourceBasePath}/js/entry/agent/module/invoice/invoice-followup.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<#import "/agent/module/suppliers/supplierFrame.html" as sframe>
+<#import "/module/address/address.html" as addr>
+<#import "/common/utils/html-generator.html" as htmlGen>
+<#assign transforEnumToList = "au.com.isell.rlm.common.freemarker.func.EnumToList"?new()>
+<#assign dataLoader = "au.com.isell.rlm.common.freemarker.func.DataLoader"?new()>
+
+<@sframe.supplier>
+<div id="content">
+	<@sframe.supplierNavTabs "annualBilling"/>
+	<div id="contentBody">
+		<form action="#" autocomplete="off" method="post" id="billing-form">
+			<div id="actionBar">
+				<ul>
+					<@shiro.hasPermission name="supplier:annualBilling:edit">
+						<li><button class="link-btn edit-btn" type="button">Edit</button></li>
+						<li><button class="link-btn save-btn">Save</button></li>
+						<li><button class="link-btn cancel-btn" type="reset">Cancel</button></li>
+					</@shiro.hasPermission>
+				</ul>
+			</div>
+			
+			<div class="commonBox">
+				<h2>Billing Information</h2>
+				<table>
+					<tr>	
+						<td>Renewal Date</td>
+						<td><input type="date" title="Date Format yyyy-mm-dd" size="10" class="format-y-m-d date divider-dash" value='${(billingInfo.renewDate?string("yyyy-MM-dd"))!}' name="renewDate"/>
+						<input type="button" id="clear-calendar" class="clear-calendar-btn" /></td>
+					</tr>
+					
+					<tr>	
+						<td>Annual Fee</td>
+						<td><input type="text" size="10" value='${(billingInfo.annualFee)!}' name="annualFee"/></td>
+					</tr>
+													
+					<tr>	
+						<td><br />First Name</td>
+						<td><br /><input type="text" size="15" value='${(billingInfo.firstName)!}' name="firstName"/></td>
+					</tr>
+					
+					<tr>	
+						<td>Last Name</td>
+						<td><input type="text" size="15" value='${(billingInfo.lastName)!}' name="lastName"/></td>
+					</tr>
+					
+					<tr>	
+						<td>Phone</td>
+						<td><input class="disabled unmodified" disabled="disabled" type="text" size="1" value="${phonePrefix}"/>
+						<input type="text" size="10" value='${(billingInfo.phone)!}' name="phone" /></td>
+					</tr>
+					
+					<tr>	
+						<td>Job Position</td>
+						<td><input type="text" size="25" value='${(billingInfo.jobPosition)!}' name="jobPosition"/></td>
+					</tr>
+					
+					<tr>	
+						<td>Email Address</td>
+						<td><input type="text" size="25" value='${(billingInfo.email)!}' name="email"/></td>
+					</tr>
+					
+					<tr>	
+						<td>Additional Email</td>
+						<td><input type="text" size="25" value='${(billingInfo.additionalEmail)!}' name="additionalEmail"/></td>
+					</tr>
+					
+					<tr>	
+						<td>Currency</td>
+						<td><select disabled="disabled" name="currency">
+								<#assign dataList=dataLoader('au.com.isell.rlm.module.system.service.SystemService',"getCurrencies")> 
+								<@htmlGen.selOptions (billingInfo.currency)!'null' dataList {"key":"code","display":"name"}/>
+						</select></td>
+					</tr>
+					
+					<tr>	
+						<td>GST/Tax</td>
+						<td><select disabled="disabled" name="tax">
+								<#assign dataList=dataLoader('au.com.isell.rlm.common.services.FinancialDataService',"getGstValsByCountry",(country)!)> 
+								<@htmlGen.selOptions (billingInfo.tax)!'null' dataList {"key":"key","display":"value"}/>
+							</select></td>
+					</tr>
+					
+					<tr>	
+						<td>Comments:</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td colspan="2"><textarea rows="3" cols="35"  name="comments"/>${(billingInfo.comments)!}</textarea></td>
+					</tr>
+				</table>
+			</div>
+			<div class="commonBox">
+				<h2>Email CC</h2>
+				<table>
+					<tr>	<!--reg="^(((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\,){1,})?$"-->
+						<td><textarea rows="15" cols="35" name="email_cc" >${(billingInfo.email_cc)!}</textarea></td>
+					</tr> 
+				</table>
+			</div>
+			<div style="clear: both;"></div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript" src="${sframe.resourceBasePath}/js/entry/agent/module/supplier/annualBilling.js"></script>
+</@sframe.supplier>	

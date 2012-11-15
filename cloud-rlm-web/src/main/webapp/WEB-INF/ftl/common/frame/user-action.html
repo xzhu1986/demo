@@ -1,0 +1,6 @@
+<#include '/common/frame/global-settings.html'>
+<@shiro.authenticated>
+	<#if (Session.user)??>
+		<p>${Session.user.username} <a href="${basePath}/logout?userType=${Session.userType!}">(logout)</a> </p>
+	</#if>
+</@shiro.authenticated>

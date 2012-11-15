@@ -1,0 +1,59 @@
+<#include '/common/frame/global-settings.html'>
+
+<#macro setting>
+	<#if agentId?string=='new'>
+		<#assign displayTitle='Create Agent'>
+	<#else>
+		<#assign currency_temp=dataLoader('au.com.isell.rlm.module.agent.service.AgentService',"getAgent",agentId)>
+		<#assign displayTitle='Agent: '+currency_temp.name>
+	</#if>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>${displayTitle}</title>
+		<#include '/common/resource.html'>
+	</head>
+	<body>
+		<div id="contentZone">
+			<div id="headerDate">
+				<p id="date">${.now?string('EEEEEE dd MMM yyyy')}</p>
+			</div>
+			<div id="contentContainer">
+				<div id="contentCommon">
+					<h1>${displayTitle}</h1>
+					<#include '/common/frame/user-action.html'>
+				</div>
+				<#nested>
+			</div>
+		</div>
+	</body>
+</html>
+</#macro>
+
+<#macro settingNavTabs activeTab>
+	<div id="navbar">
+		<ul id="navbarCommon">
+			<#if (activeTab?? && activeTab=='details') ><li class="active"><#else><li></#if>
+			<a href="${basePath}/settings/Agents/${agentId}">Details</a></li>
+			<#if  agentId?? && agentId!='new'>
+				<#if activeTab?? && activeTab=='region'><li class="active"><#else><li></#if>
+					<a href="${basePath}/settings/Agents/${agentId}/region">Regions</a></li>
+				<#if activeTab?? && activeTab=='tplUpload'><li class="active"><#else><li></#if>
+					<a href="${basePath}/settings/Agents/${agentId}/report-template">Templates</a></li>
+				<#if activeTab?? && activeTab=='Inoivce'><li class="active"><#else><li></#if>
+					<a href="${basePath}/settings/Agents/${agentId}/emailtemplate/Inoivce">Invoice Email</a></li>
+				<#if activeTab?? && activeTab=='FollowUp'><li class="active"><#else><li></#if>
+					<a href="${basePath}/settings/Agents/${agentId}/emailtemplate/FollowUp">Follow-up Email</a></li>
+				<#if activeTab?? && activeTab=='FinalNotice'><li class="active"><#else><li></#if>
+					<a href="${basePath}/settings/Agents/${agentId}/emailtemplate/FinalNotice">Final Notice Email</a></li>
+				<#if activeTab?? && activeTab=='Demand'><li class="active"><#else><li></#if>
+					<a href="${basePath}/settings/Agents/${agentId}/emailtemplate/Demand">Demand Email</a></li>
+				<#if activeTab?? && activeTab=='Debit'><li class="active"><#else><li></#if>
+					<a href="${basePath}/settings/Agents/${agentId}/emailtemplate/Debit">Direct Debit Email</a></li>
+				<#if activeTab?? && activeTab=='InvoiceTermsTemplate'><li class="active"><#else><li></#if>
+					<a href="${basePath}/settings/Agents/${agentId}/invoicetermstemplate">Invoice Terms</a></li>
+			</#if>
+		</ul>
+	</div>
+</#macro>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<permissionPackage display="Show Suppliers from these Countries" orderNo="23">
+	<permissionGroup display="${name}" dynamic='true' dataService="au.com.isell.rlm.module.address.service.AddressService" dataMethod="getSubItems" dataParam="root">
+		<permission key="supplier:when_country_${code}:view" display="Enabled"/>
+	</permissionGroup>
+</permissionPackage>

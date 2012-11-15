@@ -1,0 +1,44 @@
+<#import "/reseller-portal/supplier/suppliersFrame.html" as rframe>
+<#include "/common/frame/global-settings.html">
+
+<@rframe.supplier 'filter'>
+		<div id="contentMain" style='margin:0;'>
+			<form action="#" id="supplier-search-form" autocomplete="off">
+				<input type="hidden" name="filter" value='${(filter)!}'/>
+				<input type="hidden" name="serialNo" value='${(serialNo)!}'/>
+				<table id="branchesTable" class="maxWidthTable sortable">
+					<tr id="filterTitle">
+						<th width="40%">Supplier</th>
+						<th width="10%">Country</th>
+						<th width="20%">Break Name</th>
+						<th width="10%">Status</th>
+						<th width="30%">Last Download</th>
+					</tr>
+					<#if data??>
+						<#list data as item>
+							<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+								<td><a href="${rframe.basePath}/reseller-portal/supplier-map/${item.supplierId}" class="supplier-reseller-a">${(item.supplierName)!}</a></td>
+								<td>
+									<#assign addrData=dataLoader('au.com.isell.rlm.module.address.service.AddressService','getAddressItem',item.supplierCountry)>
+									${(addrData.name)!}
+								</td>
+								<td>${(item.breakName)!}</td>
+								<td><@i18n.msg enumDisplay('au.com.isell.rlm.module.reseller.domain.ResellerSupplierMap$ApprovalStatus',item.status!'')/></td>
+								<#if item.lastDownload??>
+									<#assign days=dayDiff(item.lastDownload?datetime,0,.now?datetime)>
+									<td ${(days lt 1)?string('class="red"','')}>${days} Days</td>
+								<#else>
+									<td></td>
+								</#if>
+							</tr>
+						</#list>
+					</#if>
+				</table>
+			</form>
+			
+			<div id="pageLinks">
+				<@pagingBar.pagingBar1 paging/>
+			</div>
+		</div>
+		<script type="text/javascript" src='${rframe.resourceBasePath}/js/entry/reseller-portal/supplier/reseller-supplier-map.js'></script>
+</@rframe.supplier>

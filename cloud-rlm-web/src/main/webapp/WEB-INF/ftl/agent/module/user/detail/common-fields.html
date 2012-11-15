@@ -1,0 +1,39 @@
+<#include "/common/frame/global-settings.html">
+<input type="hidden" class="form-field2" value="${(data.userId)!}" name="userId"/>
+<tr>
+	<td>Username</td>
+	<td><input type="text" class="form-field2" value="${(data.username)!}" name="username" reg="^.+$" tip="not blank"/></td>
+</tr>
+<tr>
+	<td>loginFailureCount</td>
+	<td>
+		<input type="text" style="width: 50px;" value="${(data.loginFailureCount)!}" name="loginFailureCount"/>
+		<input name="email" data-userid='${(data.userId)!}'	id="email" type="button"/> Password
+	</td>
+</tr>
+<tr>
+	<td>First Name</td>
+	<td><input type="text"  class="form-field2" value="${(data.firstName)!}" name="firstName"/></td>
+</tr>
+<tr>
+	<td>Last Name</td>
+	<td><input type="text"  class="form-field2" value="${(data.lastName)!}" name="lastName"/></td>
+</tr>
+<tr>
+	<td>Job Position</td>
+	<td><input type="text" class="form-field2" value="${(data.jobPosition)!}" name="jobPosition"/></td>
+</tr>
+<tr>
+	<td>Email</td>
+	<td><input type="text"  class="form-field2" value="${(data.email)!}" name="email"/></td>
+</tr>
+<tr>
+	<td>Status</td>
+	<td>
+		<select name="status" style="width: 120px;">
+			<option value=""></option>
+			<#assign dataList=transforEnumToList('au.com.isell.rlm.module.user.constant.UserStatus',"false")> 
+			<@htmlGen.selOptions (data.status)!'null' dataList {"key":"key","display":"name"}/>
+		</select>
+	</td>
+</tr>

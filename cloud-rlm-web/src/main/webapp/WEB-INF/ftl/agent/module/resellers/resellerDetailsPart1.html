@@ -1,0 +1,88 @@
+<#assign userType=Session.user.type>
+<div class="commonBox">
+				<h2>Company Details</h2>
+				<table>
+					<tr>
+						<td>Company</td>
+						<td><input type="text"  size="30" value="${(reseller.company)!}" name="reseller.company" reg="^.+$" tip="not blank"/></td>
+					</tr>
+
+					<tr>
+						<td>Website</td>
+						<td><input type="text"  size="30" value="${(reseller.website)!}" name="reseller.website"/></td>
+					</tr>
+
+					<tr>
+						<td>Ecom Website</td>
+						<td><input type="text"  size="30" value="${(reseller.ecomSite)!}" name="reseller.ecomSite"/></td>
+					</tr>
+
+					<tr>
+						<td>Password</td>
+						<td><input type="password" size="25" value="${(resellerUser.password)!}" name="resellerUser.password" reg="\S+"/> <input name="email" data-userid='${(resellerUser.userId)!}'
+							id="email" type="button"/></td>
+					</tr>
+					<tr>
+						<td>Confirm Password</td>
+						<td><input type="password" size="25" value="${(resellerUser.password)!}" id="confirmpassword" reg="\S+"/></td>
+					</tr>
+					<#if (userType!='Reseller') >
+						<tr>
+							<td>Login</td>
+							<td><select  name="resellerUser.status"> 
+								<#assign resellerTypeDataList=transforEnumToList('au.com.isell.rlm.module.user.constant.UserStatus',"false")> 
+								<@htmlGen.selOptions (resellerUser.status)!'' resellerTypeDataList {"key":"key","display":"name"}/>
+							</select></td>
+						</tr>
+					</#if>
+					<tr>
+						<td>First Name</td>
+						<td><input type="text"  size="15" value="${(resellerUser.firstName)!}" name="resellerUser.firstName"/></td>
+					</tr>
+
+					<tr>
+						<td>Last Name</td>
+						<td><input type="text"  size="15" value="${(resellerUser.lastName)!}" name="resellerUser.lastName"/></td>
+					</tr>
+
+					<tr>
+						<td>Job Position</td>
+						<td><input type="text"  size="25" value="${(resellerUser.jobPosition)!}" name="resellerUser.jobPosition"/></td>
+					</tr>
+
+					<tr>
+						<td>Email Address</td>
+						<td>
+							<input type="hidden" value="${(resellerUser.userId)!}" name="resellerUser.userId"/>
+							<input type="text"  size="25" value="${(resellerUser.email)!}" data-old-val="${(resellerUser.email)!}" name="resellerUser.email" reg="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
+						</td>
+					</tr>
+					<#-- import the address --> 
+					<#assign addressVal= reseller.address>
+					<@addr.address reseller.country 'address' addressVal />
+
+					<tr class="rs-phone">
+						<td>Phone</td>
+						<td>
+							<input class="disabled unmodified phone-prefix"  type="text" size="1" value="${(phonePrefix)!}"/> <input type="text"  size="10"
+							value='${(resellerUser.phone)!}' name="resellerUser.phone" class="phone-number"/>
+						</td>
+					</tr>
+
+					<tr class="rs-phone">
+						<td>Mobile</td>
+						<td>
+							<input class="disabled unmodified phone-prefix"  type="text" size="1" value="${(phonePrefix)!}"/> <input type="text"  size="10"
+							 value='${(resellerUser.mobile)!}' name="resellerUser.mobile" class="phone-number"/>
+						</td>
+					</tr>
+
+					<tr class="rs-phone">
+						<td>Alt Phone</td>
+						<td>
+							<input class="disabled unmodified phone-prefix"  type="text" size="1" value="${(phonePrefix)!}"/> <input type="text"  size="10"
+							 value='${(resellerUser.altPhone)!}' name="resellerUser.altPhone" class="phone-number" />
+						</td>
+					</tr>
+				</table>
+			</div>

@@ -1,0 +1,51 @@
+<#import "/reseller-portal/supplier/suppliersFrame.html" as rframe>
+<#include "/common/frame/global-settings.html">
+
+<@rframe.supplier 'add'>
+		<div id="contentMain" style='margin:0;'>
+			<form action="#" id="supplier-add-form" autocomplete="off">
+				<table  class="maxWidthTable sortable" id="data-table" data-url="${basePath}/reseller-portal/suppliers/not-allcocated/data.json">
+					<thead>
+						<tr id="filter">
+							<th><input name="name" title="" type="text" style="width:100%" value='${(name)!}'/></th>
+							<th><input name="overview" title="" type="text" style="width:100%" value='${(overview)!}'/></th>
+							<th>
+								<input name="submit" id="search" type="submit" title="Search" value="" /> 
+								<input name="cancel" id="cancel" value="" type="reset" />
+							</th>
+							<th></th>
+							<th></th>
+						</tr>
+						<tr id="filterTitle">
+							<th width="15%">Name</th>
+							<th width="50%">Overview</th>
+							<th >Country</th>
+							<th >Website</th>
+							<th >Phone</th>
+						</tr>
+					</thead>
+					<tbody>
+						<#if data??>
+							<#list data as item>
+								<tr>
+									<th><a href="${basePath}/reseller-portal/supplier/${item.supplierId}/detail" target="_blank">${item.name}</a></th>
+									<th>${item.marketingSummary!}</th>
+									<th>
+										<#assign addrData=dataLoader('au.com.isell.rlm.module.address.service.AddressService','getAddressItem',item.country)>
+										${(addrData.name)!}
+									</th>
+									<th><a href="${item.webAddress!}" class="website-addr" target="_blank">${item.webAddress!}</a></th>
+									<th><a href="callto://${item.phone!}">${item.phone!}</a></th>
+								</tr>
+							</#list>
+						</#if>
+					</tbody>
+				</table>
+			</form>
+			<div id="pageLinks">
+				<@pagingBar.pagingBar1 paging/>
+			</div>
+			 
+		</div>
+		<script type="text/javascript" src="${rframe.resourceBasePath}/js/entry/reseller-portal/supplier/add-supplier.js"></script>
+</@rframe.supplier>

@@ -1,0 +1,66 @@
+<#import "/common/frame/frame.html" as frame>
+<#include '/common/frame/global-settings.html'>
+<#import "/common/popupDiv.html" as popupDiv>
+
+<#macro sframe>
+	<@frame.main>
+	<div id="content">
+		<@frame.isellNavTabs "settings"/>
+	
+		<div id="contentBody">
+			<div id="sidebar">
+				<div class="surroundingBox">
+					<h2>Category</h2>
+					<ul id='query-filters'>
+						<#assign dataList=transforEnumToList('au.com.isell.rlm.module.system.vo.SettingCategorys',"false")>
+						<#list dataList as dataItem>
+							<#if category?? && category?string==dataItem.key?string>
+								<li class="selected">${dataItem.name}</li>
+							<#else>
+								<li><a href="${basePath}/agent/settings/${dataItem.key}">${dataItem.name}</a></li>
+							</#if>
+						</#list>
+					</ul>
+				</div>
+	
+				<div class="surroundingBox">
+					<h2>Maintenance</h2>
+					<ul>
+						<@shiro.hasPermission name="setting:create">
+						<#switch category>
+							<#case "Countries">
+								<li><a href="${basePath}/settings/${category}/new" target="_blank">New Country</a></li>
+							<#break>
+							<#case "Currencies">
+								<li><a href="${basePath}/settings/${category}/new" target="_blank">New Currency</a></li>
+							<#break>
+							<#case "Users">
+								<!--<li><a href="${basePath}/users/agent/new"  target="_blank">New User - iSell</a></li>-->
+								<li><a href="${basePath}/users/agent/new"  target="_blank">New User - Agent</a></li>
+							<#break>
+							<#case "Agents">
+								<li><a href="${basePath}/settings/${category}/new" id="createAgent">New Agent</a></li>
+								<@popupDiv.selectCountry/>
+							<#break>
+							<#case "EmailTemplates">
+								<li><a href="${basePath}/settings/${category}/new" target="_blank">New Email Template</a></li>
+							<#break>
+							<#default>
+								
+						</#switch>
+						</@shiro.hasPermission>
+					</ul>
+				</div>
+			</div>
+	
+			<div id="contentMain">
+					<input type="hidden" name="category" value='${(category)!}'/>
+					<#nested>
+			</div>
+	
+			<div style="clear: both;"></div>
+		</div>
+	</div>
+	<script type="text/javascript" src="${resourceBasePath}/js/entry/agent/settings.js"></script>
+	</@frame.main>
+</#macro>

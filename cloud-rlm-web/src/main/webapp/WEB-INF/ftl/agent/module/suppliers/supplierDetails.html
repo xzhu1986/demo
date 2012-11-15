@@ -1,0 +1,140 @@
+<#import "/agent/module/suppliers/supplierFrame.html" as sframe>
+<#import "/module/address/address.html" as addr>
+<#import "/common/utils/html-generator.html" as htmlGen>
+<#assign transforEnumToList = "au.com.isell.rlm.common.freemarker.func.EnumToList"?new()>
+<#assign dataLoader = "au.com.isell.rlm.common.freemarker.func.DataLoader"?new()>
+
+<@sframe.supplier>
+<div id="content">
+	<@sframe.supplierNavTabs "details"/>
+
+	<div id="contentBody">
+		<form action="#" autocomplete="off" method="post" id="detail-form">
+			<div id="actionBar">
+				<ul>
+					<@shiro.hasPermission name="supplier:edit">
+						<li><button class="link-btn edit-btn" type="button">Edit</button></li>
+						<li><button class="link-btn save-btn">Save</button></li>
+						<li><button class="link-btn cancel-btn" type="reset" >Cancel</button></li>
+					</@shiro.hasPermission>
+				</ul>
+			</div>
+			<div class="commonBox">
+				<h2>Supplier Details</h2>
+				<table>
+					<tr>
+						<td>Full Name</td>
+						<td><input type="text" size="30" value="${(supplier.name)!}" name="supplier.name" reg="^.+$" tip="not blank"/></td>
+					</tr>
+
+					<tr>
+						<td>Short Name</td>
+						<td><input type="text" size="30" value="${(supplier.shortName)!}" name="supplier.shortName"/></td>
+					</tr>
+
+					<tr>
+						<td>Supplier ID</td>
+						<td><input class="disabled" readonly="readonly" size="30" value="${(supplier.supplierId)!}" name="supplier.supplierId"/></td>
+					</tr>
+
+					<tr>
+						<td>Created</td>
+						<td>
+							<#if (supplier.createDate)??>
+								<#assign dateStr=supplier.createDate?string("yyyy-MM-dd HH:mm:ss")>
+							<#else>
+								<#assign dateStr=''>
+							</#if>
+							<input class="disabled unmodified" disabled="disabled" type="text" size="20"
+								value='${dateStr}' name="supplier.createDate"/></td>
+					</tr>
+					<tr>
+						<td>Status</td>
+						<td><select disabled="disabled" name="supplier.status"> 
+								<#assign statusTypeDataList=transforEnumToList('au.com.isell.rlm.module.supplier.domain.Supplier$Status',"false")> 
+								<@htmlGen.selOptions (supplier.status)!'null' statusTypeDataList {"key":"key","display":"name"}/>
+							</select>
+						</td>
+					</tr>
+					<tr class="address-item">
+						<td>Country</td>
+						<td>
+							<select name="supplier.country" class="disabled unmodified" disabled="disabled">
+								<option value=""></option>
+								<#assign dataList=dataLoader('au.com.isell.rlm.module.address.service.impl.AddressServiceImpl',"getSubItems",'root')>
+								<@htmlGen.selOptions supplier.country!'' dataList {"key":"code","display":"name"}/>
+							</select>
+						</td>
+					</tr>
+
+					<tr class="rs-phone">
+						<td>Main Phone</td>
+						<td>
+							<input class="disabled unmodified phone-prefix" disabled="disabled" type="text" size="1" value="${(phonePrefix)!}"/> 
+							<input type="text" size="10" value='${(supplier.mainPhoneNumber)!}' name="supplier.mainPhoneNumber" class="phone-number"/>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>Username</td>
+						<td><input type="text" size="25" value="${(supplierUser.username)!}" name="supplierUser.username" reg="\S+" tip="not blank"/></td>
+					</tr>
+
+					<tr>
+						<td>Password</td>
+						<td><input type="password" size="25" value="${(supplierUser.password)!}" name="supplierUser.password" reg="\S+" tip="not blank"/> 
+						<input name="email" data-userid='${(supplierUser.userId)!}' id="email" type="button"/></td>
+					</tr>
+					<tr>
+						<td>Email Address</td>
+						<td><input type="text" size="25" value="${(supplierUser.email)!}" name="supplierUser.email" reg="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/></td>
+					</tr>
+					<tr>
+						<td>Login Status</td>
+						<td><select disabled="disabled" name="supplierUser.status"> 
+							<#assign resellerTypeDataList=transforEnumToList('au.com.isell.rlm.module.user.constant.UserStatus',"false")> 
+							<@htmlGen.selOptions (supplierUser.status)!'' resellerTypeDataList {"key":"key","display":"name"}/>
+						</select></td>
+					</tr>
+					<tr>
+						<td>iSell's Notes:</td>
+						<td></td>
+					</tr>
+					<tr>	
+						<td colspan="2"><textarea rows="6" cols="40" name="supplier.isellNotes">${(supplier.isellNotes)!}</textarea></td>
+					</tr>
+				</table>
+			</div>
+
+			<div class="commonBox">
+				<h2>Overview Information for Resellers</h2>
+				<table>
+					<tr>
+						<td>Web Site</td>
+						<td><input type="text" size="30" value="${(supplier.webAddress)!}" name="supplier.webAddress"/></td>
+					</tr>
+					<tr>
+						<td>Marketing Overview:</td>
+						<td></td>
+					</tr>
+					<tr>	
+						<td colspan="2"><textarea rows="2" cols="50" name="supplier.marketingSummary"/>${(supplier.marketingSummary)!}</textarea></td>
+					</tr>
+					<tr>	
+						<td>Detailed Summary:</td>
+						<td></td>
+					</tr>
+					<tr>	
+						<td colspan="2"><textarea rows="15" cols="50" name="supplier.detailedSummary">${(supplier.detailedSummary)!}</textarea></td>
+					</tr> 
+				</table>
+			</div>
+
+			<div style="clear: both;"></div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript" src="${sframe.resourceBasePath}/js/module/address/choose.js"></script>
+<script type="text/javascript" src="${sframe.resourceBasePath}/js/entry/agent/module/supplier/supplier-detail.js"></script>
+</@sframe.supplier>

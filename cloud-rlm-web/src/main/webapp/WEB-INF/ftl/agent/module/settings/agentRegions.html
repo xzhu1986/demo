@@ -1,0 +1,72 @@
+<#import "/agent/module/settings/agentFrame.html" as sframe>
+<#include "/common/frame/global-settings.html">
+
+<@sframe.setting>
+<style type="text/css">
+	.regionCodeSels select{
+		margin-right:5px;
+	}
+</style>
+<div id="content">
+	<@sframe.settingNavTabs "region"/>
+
+	<div id="contentBody">
+			<div id="actionBar">
+				<ul>
+					<@shiro.hasPermission name="setting:create">
+					<li><a href="" class="add-btn" onclick='return JsUtils.openWindow("${basePath}/settings/Agents/${agentId}/region/new","New Agent Region",600,400)'>Add</a></li>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="setting:delete">
+					<li><a href="" class="del-btn">Delete</a></li>
+					</@shiro.hasPermission>
+				</ul>
+			</div>
+			<div class="commonBox" style='width:100%;' id="agent-data" data-agentid='${agentId}'>
+				<h2>Agent Region</h2>
+				<table  class='maxWidthTable sortable'>
+					<tr id="filterTitle">
+						<@shiro.hasPermission name="setting:delete"><th>&nbsp;</th></@shiro.hasPermission>
+						<th>Region</th>
+						<th>Currency</th>
+						<th>TaxRate</th>
+						<th>Established Date</th>
+						<th>Stopped Date</th>
+						<th>Status</th>
+					</tr>
+					<#if data?? && data?size gt 0>
+						<#list data as rItem>
+							<tr class="dataRow">
+								<@shiro.hasPermission name="setting:delete">
+								<td><input type="checkbox" class='del-checkbox' data-regionCode="${rItem.regionCode}" /></td>
+								</@shiro.hasPermission>
+								<td class='regionCodeCol'>
+									<#assign dataList=dataLoader('au.com.isell.rlm.module.address.service.AddressService',"getAddressParentObjs",rItem.regionCode)>
+									<a href="#" onclick='return JsUtils.openWindow("${basePath}/settings/Agents/${agentId}/region/${rItem.regionCode}","New Agent Region",600,600)'>
+									<#list dataList as regionItem>
+										<#if regionItem_index gt 0>,</#if>
+										${regionItem.shortName}
+									</#list>
+									</a>
+								</td>
+								<td>
+									<#if rItem.currency?? && rItem.currency!=''>
+										<#assign currencyObj=dataLoader('au.com.isell.rlm.module.system.service.SystemService',"getCurrency",rItem.currency)> 
+										${currencyObj.name}
+									</#if>
+								</td>	
+								<td>${rItem.taxRate!}%</td>
+								<td><#if rItem.establishedDate??>${rItem.establishedDate?date}</#if></td>
+								<td><#if rItem.stoppedDate??>${rItem.stoppedDate?date}</#if></td>
+								<td>${rItem.status}</td>
+							</tr>
+						</#list>
+					</#if>
+				</table>
+			</div>
+
+			<div style="clear: both;"></div>
+	</div>
+</div>
+<script type="text/javascript" src="${resourceBasePath}/js/module/address/choose.js"></script>
+<script type="text/javascript" src="${resourceBasePath}/js/entry/agent/module/setting/agent-regions.js"></script>
+</@sframe.setting>

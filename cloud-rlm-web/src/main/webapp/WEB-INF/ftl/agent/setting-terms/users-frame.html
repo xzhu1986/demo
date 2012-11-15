@@ -1,0 +1,19 @@
+<#import '../settings-frame.html' as sf>
+<#include '/common/frame/global-settings.html'>
+
+<#macro usframe activeTab>
+	<@sf.sframe>
+		<!--  
+		<div id="sub-navbar">
+			<ul id="sub-navbarCommon">
+				<#if (activeTab?? && activeTab=='isell') ><li class="active"><#else><li></#if><a href="${basePath}/agent/settings/Users/agent">ISell Users</a></li>
+				<#if (activeTab?? && activeTab=='agent') ><li class="active"><#else><li></#if>
+					<a href="${basePath}/agent/settings/Users/agent">Agent Users</a></li>
+			</ul>
+		</div>
+		-->
+		
+		<#nested>
+		
+	</@sf.sframe>
+</#macro>

@@ -1,0 +1,18 @@
+<#import "/common/frame/frame.html" as frame>
+<#include '/common/frame/global-settings.html'>
+
+<@frame.main>
+	<div id="contentLogicError">
+		<h3 class="logicErrorMsg">
+			<#if error.msgParams??>
+				<@i18n.msgArgs error.msgCode error.msgParams/>
+			<#else>
+				<@i18n.msg error.msgCode/>
+			</#if>
+		</h3>
+		<div class="logicErrorActioin">
+			<button class='link-btn' type='button' onclick='history.go(-1)'>Go Back</button>
+			<button class='link-btn' type='button' onclick='window.location.href=basePath'>Go to Homepage</button>
+		</div>
+	</div>
+</@frame.main>

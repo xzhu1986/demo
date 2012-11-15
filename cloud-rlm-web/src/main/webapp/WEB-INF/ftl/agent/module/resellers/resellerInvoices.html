@@ -1,0 +1,93 @@
+<#import "/agent/module/resellers/resellerFrame.html" as rframe>
+<#include "/common/frame/global-settings.html">
+
+<@rframe.reseller>
+<div id="content">
+	<@rframe.resellerNavTabs "invoices"/>
+	
+	<div id="contentBody">
+		<div id="actionBar">
+			<ul>
+				<@shiro.hasPermission name="invoice:create">
+					<li><a href="${rframe.basePath}/invoice/quick-create/${serialNo!}?businessType=NewBusiness" id="newBusiness">New Business</a></li>
+					<li><a href='${rframe.basePath}/invoice/new?resellerSerialNo=${serialNo}' target='_blank'>Blank Invoice</a></li>
+					<li><a href="${rframe.basePath}/invoice/quick-create/${serialNo!}?businessType=Renewal" id="renewalInvoice">Renewal Invoice</a></li>
+				</@shiro.hasPermission>
+			</ul>
+		</div>
+		<div id="sidebar">
+			<div class="surroundingBox">
+				<h2>Filters</h2>
+				<ul id='query-filters'>
+					<#assign dataList=transforEnumToList('au.com.isell.rlm.module.invoice.vo.InvoiceSearchFilters4Reseller',"false")>
+					<#list dataList as dataItem>
+						<#if filter?? && filter?string==dataItem.key?string>
+							<li class="selected"><a href="${basePath}/resellers/${serialNo}/invoices?filter=${dataItem.key}" >${dataItem.name}</a></li>
+						<#else>
+							<li><a href="${basePath}/resellers/${serialNo}/invoices?filter=${dataItem.key}" >${dataItem.name}</a></li>
+						</#if>
+					</#list>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="contentMain">
+			<form action="#" id="invoice-search-form" autocomplete="off">
+				<input type="hidden" name="filter" value='${(filter)!}'/>
+				<input type="hidden" name="serialNo" value='${(serialNo)!}'/>
+				<#assign dataList=transforEnumToList('au.com.isell.rlm.module.invoice.domain.Invoice$AmountType',"false")>
+				<table id="invoicesTable" class="maxWidthTable sortable">
+					<tr id="filterTitle">
+						<th width="6%">Invoice</th>
+						<th width="8%">Date</th>
+						<th width="12%">Status</th>
+						<th width="8%">Agent</th>
+						<th width="5%">Currency</th>
+						
+						<#list dataList as item>
+							<th class="textRightAligned" width="7%">${item.name}</th>
+						</#list>
+						
+						<th class="textRightAligned" width="7%">Total</th>
+						<th class="textRightAligned" width="7%">Balance Inc</th>
+						<th>Followup</th>
+					</tr>
+					
+					<#if data??>
+						<#list data as item>
+							<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+								<td><a href="${basePath}/invoice/${item.invoiceNumber}" target="_blank">${(item.invoiceNumber)!}</a></td>
+								<#if item.invoiceDate??>
+									<td>${item.invoiceDate?date}</td>
+								<#else>
+									<td></td>
+								</#if>
+								<td><@i18n.msg enumDisplay('au.com.isell.rlm.module.invoice.domain.Invoice$InvoiceStatus',item.status!'')/></td>
+								<td>${item.agentName!}</td>
+								<td>${item.currency!}</td>
+								<#list dataList as amitem>
+									<th class="textRightAligned">${((item.amounts[amitem.key])!0)?string(currencyFmt)}</th>
+								</#list>
+								<td class="textRightAligned">${(item.totalAmount!0)?string(currencyFmt)}</td>
+								<td class="textRightAligned blance">${(item.balance!0)?string(currencyFmt)}</td>
+								<#if item.followupDate??>
+									<td>${item.followupDate?date}</td>
+								<#else>
+									<td></td>
+								</#if>
+							</tr>
+						</#list>
+					</#if>		
+				</table>
+			</form>
+			
+		</div>
+		
+		<div style="clear: both;"></div>
+	</div>	
+	
+</div>
+<div id="invoiceQuickCreate" style="display:none;"></div>
+<script type="text/javascript" src="${resourceBasePath}/js/entry/agent/module/reseller/reseller-invoice.js"></script>
+<script type="text/javascript" src="${resourceBasePath}/js/entry/agent/module/reseller/quick-invoice-create.js"></script>
+</@rframe.reseller>

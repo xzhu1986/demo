@@ -1,0 +1,28 @@
+Problems:
+1. multi domain on one machine and ssl
+2. email sending, 
+3. sync performance / table lock issue. need to test, list sync tables and find out the performance
+	ASN.1 or some binary format?
+	Long connection?
+	Generate cloud version ID for datas
+	Merge rule if both side changes
+	One reseller can only have one connection.
+	JBE -> Cloud
+	1) uploaded 1 record one time only and direct process 
+	2) SQS to another service to import
+	3) Conflict process: Jobs(notes, status), Quote(any updates online), Order(?)
+	4) For new quote version only transfer header and changed items (confirm with richard) design quote structure on cloud.
+	5) delete file when whole file done.
+	6) output table management: all with timestamp, upload based on from and end datetime (date >= yyyy-MM-dd HH:mm:ss and date <= yyyy-MM-dd HH:mm:ss), use an independent connection to control transaction and roll back if anything failed. 
+	6) Initial upload: without data in output table
+	Cloud -> JBE
+	1) Download data and cache locally as file (group of data in one file(how to mark partial failed)? each data a file?)
+	2) conflict process: Quote(any updates online), Order(?), Jobs(Notes, status), customer, colleagues, account
+	3) for new data (only with cloud Id) generate new jbe id and send id back to cloud
+	4) DB failure: retry later
+	5) When whole file done, delete the file.
+4. query, solr in memory, simple db, S3
+5. web service authenticate: server part
+6. how does client application tell which reseller.
+7. S3 storage structure
+8. sdb design

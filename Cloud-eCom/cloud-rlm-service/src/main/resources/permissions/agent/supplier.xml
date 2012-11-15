@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<permissionPackage display="Suppliers" orderNo="21">
+	<permissionGroup display="Suppliers">
+		<permission key="supplier:view" display="Enabled"/>
+		<permission key="supplier:edit" display="Edit" dependsOn="supplier:view"/>
+		<permission key="supplier:create" display="Create" dependsOn="supplier:edit"/>
+	</permissionGroup>
+	<permissionGroup display="Annual Billing">
+		<permission key="supplier:annualBilling:view" display="Enabled" dependsOn="supplier:view"/>
+		<permission key="supplier:annualBilling:edit" display="Edit" dependsOn="supplier:annualBilling:view"/>
+		<!-- <permission key="supplier:annualBilling:create" display="Create" dependsOn="supplier:annualBilling:edit"/>
+		<permission key="supplier:annualBilling:delete" display="Delete" dependsOn="supplier:annualBilling"/> -->
+	</permissionGroup>
+	<permissionGroup display="Data Requests">
+		<permission key="supplier:dataRequest:view" display="Enabled" dependsOn="supplier:view"/>
+		<permission key="supplier:dataRequest:edit" display="Edit" dependsOn="supplier:dataRequest:view"/>
+		<!-- <permission key="supplier:dataRequest:create" display="Create" dependsOn="supplier:dataRequest:edit"/>
+		<permission key="supplier:dataRequest:delete" display="Delete" dependsOn="supplier:dataRequest"/> -->
+	</permissionGroup>
+	<permissionGroup display="Price Breaks">
+		<permission key="supplier:priceBreak:view" display="Enabled" dependsOn="supplier:view"/>
+		<permission key="supplier:priceBreak:edit" display="Edit" dependsOn="supplier:priceBreak:view"/>
+		<permission key="supplier:priceBreak:create" display="Create" dependsOn="supplier:priceBreak:edit"/>
+		<permission key="supplier:priceBreak:delete" display="Delete" dependsOn="supplier:priceBreak:view"/>
+	</permissionGroup>
+	<permissionGroup display="Branches">
+		<permission key="supplier:branch:view" display="Enabled" dependsOn="supplier:view"/>
+		<permission key="supplier:branch:edit" display="Edit" dependsOn="supplier:branch:view"/>
+		<permission key="supplier:branch:create" display="Create" dependsOn="supplier:branch:edit"/>
+		<permission key="supplier:branch:delete" display="Delete" dependsOn="supplier:branch:view"/>
+	</permissionGroup>
+</permissionPackage>

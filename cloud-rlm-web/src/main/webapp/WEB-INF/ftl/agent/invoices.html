@@ -1,0 +1,107 @@
+<#import "/common/frame/frame.html" as frame>
+<#include "/common/frame/global-settings.html">
+
+<@frame.main>
+<div id="content">
+	<@frame.isellNavTabs "invoices"/>
+
+	<div id="contentBody">
+		<div id="sidebar">
+			<div class="surroundingBox">
+				<h2>Filters</h2>
+				<ul id='query-filters'>
+					<#assign dataList=transforEnumToList('au.com.isell.rlm.module.invoice.vo.InvoiceSearchFilters',"false")>
+					<#list dataList as dataItem>
+						<#if filter?? && filter?string==dataItem.key?string>
+							<li class="selected"><a href="" data-val='${dataItem.key}' >${dataItem.name}</a></li>
+						<#else>
+							<li><a href="" data-val='${dataItem.key}' >${dataItem.name}</a></li>
+						</#if>
+					</#list>
+				</ul>				
+			</div>
+
+			<div class="surroundingBox">
+				<h2>Report</h2>
+				<ul id="sendInvoiceStatisticReportList">
+					<#assign dataList=transforEnumToList('au.com.isell.rlm.module.invoice.vo.InvoiceStatisticReportType',"false")>
+					<#list dataList as dataItem>
+						<li><a href="${basePath}/invoice/statistic-report/mail?invoiceStatisticReportType=${dataItem.key}" target='_blank'><@i18n.msg dataItem.name/></a></li>
+					</#list>
+				</ul>
+			</div>
+		</div>
+
+		<div id="contentMain">
+			<form action="#" id="invoice-search-form" autocomplete="off">
+				<input type="hidden" name="filter" value='${(filter)!}'/>
+				<table id="invoicesTable" class="maxWidthTable sortable">
+					<tr id="filter">
+						<th width='6%'><input name="invoiceNumber"  title="" style="width:100%" type="text" value='${invoiceNumber!}'/></th>
+						<th width="8%"></th>
+						<th width="10%">
+							<select name="agentId"style="width:100%"> 
+									<option value=""></option>
+									<#assign dataList=dataLoader('au.com.isell.rlm.module.agent.service.AgentService',"getAgencyList")> 
+									<@htmlGen.selOptions agentId!'' dataList {"key":"agentId","display":"name"}/>
+							</select>
+						</th>
+						<th width="30%"><input name="company"  title="" style="width:100%" type="text" value=''/></th>
+						<th width="10%"></th>
+						<th width="10%"></th>
+						<th width="6%"></th>
+						<th width="10%"></th>
+						<th width="10%">
+							<input name="submit" id="search" type="submit" title="Search" value="" />
+							<input name="cancel" id="cancel" value="" type="reset" />
+							<select name="pageSize">
+								<#assign dataList=[{'key':25,'value':25}]> 
+								<@htmlGen.selOptions (pageSize)!25 dataList {"key":"key","display":"value"}/>
+							</select>
+						</th>
+					</tr>
+	
+					<tr id="filterTitle">
+						<td>Invoice</td>
+						<td>Date</td>
+						<td>Agent</td>
+						<td>Company</td>
+						<td>Contact</td>
+						<td>Phone</td>
+						<td>Currency</td>
+						<td class="textRightAligned">Total Inc</td>
+						<td class="textRightAligned">Balance Inc</td>						
+					</tr>
+					
+					<#if data??>
+						<#list data as item>
+							<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+								<td><a href="${basePath}/invoice/${item.invoiceNumber}" target="_blank">${(item.invoiceNumber)!}</a></td>
+								<#if item.invoiceDate??>
+									<td>${item.invoiceDate?date}</td>
+								<#else>
+									<td></td>
+								</#if>
+								<td>${item.agentName!}</td>
+								<td>${item.company!}</td>
+								<td>${item.contact!}</td>
+								<td>${item.toPhone!}</td>
+								<td>${item.currency!}</td>
+								<td class="textRightAligned">${(item.totalAmount!0)?string('###,##0')}</td>
+								<td class="textRightAligned">${(item.balance!0)?string('###,##0')}</td>								
+							</tr>
+						</#list>
+					</#if>		
+				</table>
+	
+				<div id="pageLinks">
+					<@pagingBar.pagingBar1 paging/>
+				</div>
+			</form>
+		</div>
+
+		<div style="clear: both;"></div>
+	</div>
+</div>
+<script type="text/javascript" src="${frame.resourceBasePath}/js/entry/agent/invoices.js"></script>
+</@frame.main>

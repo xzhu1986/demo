@@ -1,0 +1,8 @@
+<#function exists_in_list listObj itemVal>
+	<#list listObj as item>
+		<#if item==itemVal>
+			<#return true>
+		</#if>
+	</#list>
+	<#return false>
+</#function>

@@ -1,0 +1,23 @@
+<#include "/common/frame/global-settings.html">
+<h2>
+	Payment Schedule(s)
+	<span class="invoiceChildBtn rightAligned"><a href="" class="deleteSchedule" title="Delete Payment Schedule">Delete</a></span>
+	<span class="invoiceChildBtn rightAligned">
+	<a href="" class="newSchedule" title="New Payment Schedule">New</a> &nbsp;</span>
+	<#if schedules?? && schedules?size gt 0><#else><span class="invoiceChildBtn rightAligned"><a href="" class="autoGenerateSchedule" title="Auto Generate Payment Schedule">Auto Generate</a> &nbsp;</span></#if>
+</h2>
+<table  class='maxWidthTable sortable'>
+<#if schedules?? && schedules?size gt 0>
+	<#list schedules as sItem>
+		<tr class="dataRow">
+			<td><#if sItem.paidDatetime??><#else><input type="checkbox" class='del-schedule-checkbox' data-dueDate="${sItem.dueDate?long}" /></#if></td>
+			<td>${sItem_index+1}</td>
+			<td><a href="" class="editSchedule" data-dueDate="${sItem.dueDate?long}">${sItem.dueDate?date}</a></td>
+			<td><#if sItem.scheduledAmount??>${currencySymbol}${(sItem.scheduledAmount?string(currencyFmt))!}</#if></td>
+			<td><#if sItem.paidDatetime??>Paid<#if sItem.paymentType??>-${sItem.paymentType}</#if><#else>-</#if></td>
+		</tr>
+	</#list>
+</#if>
+<input type="hidden" id="scheduleTotalOwning" value="${totalOwning!}">
+<input type="hidden" id="scheduleTotalPaid" value="${totalPaid!}">
+</table>

@@ -1,0 +1,58 @@
+<#import "/reseller-portal/resellerFrame.html" as rframe> 
+
+<@rframe.reseller "downloads">
+<div id="content">
+	<div id="contentBody">
+		<@shiro.hasPermission name="resellerportal:download_update">
+			<table class="standard-downloads treeContainerTable">
+				<thead>
+					<tr>
+						<th width="30%">Name</th>
+						<th>Description</th>
+						<th width="5%">Size</th>
+						<th width="10%">Update</th>
+					</tr>
+				</thead>
+				<tbody>
+				<#if standardFiles??>
+					<#list standardFiles as item>
+						<tr id="${item.id}" class="<#if item.parentId??>child-of-${item.parentId}</#if>">
+					      <td class="topAligned"><span class="${item.type}"><#if item.path??><a href='${rframe.basePath}/file?key=${item.path!}'>${item.name}</a><#else>${item.name}</#if></span></td>
+					      <td>${(item.desc)!}</td>
+					      <td class="textRightAligned topAligned">${(item.size)!}</td>
+					      <td class="textRightAligned topAligned">${(item.lastModified?date)!}</td>
+					    </tr>
+					</#list>
+				</#if>
+				</tbody>
+			</table>
+		</@shiro.hasPermission>
+		<@shiro.hasPermission name="resellerportal:download_beta1_update">
+			<table class="restricted-downloads treeContainerTable">
+				<thead>
+					<tr>
+						<th width="30%">Name</th>
+						<th>Description</th>
+						<th width="5%">Size</th>
+						<th width="10%">Update</th>
+					</tr>
+				</thead>
+				<tbody>
+				<#if restrictedFiles??>
+					<#list restrictedFiles as item>
+						<tr id="${item.id}" class="<#if item.parentId??>child-of-${item.parentId}</#if>">
+					      <td class="topAligned"><span class="${item.type}"><#if item.path??><a href='${rframe.basePath}/file?key=${item.path!}'>${item.name}</a><#else>${item.name}</#if></span></td>
+					      <td>${(item.desc)!}</td>
+					      <td class="textRightAligned topAligned">${(item.size)!}</td>
+					      <td class="textRightAligned topAligned">${(item.lastModified?date)!}</td>
+					    </tr>
+					</#list>
+				</#if>
+				</tbody>
+			</table>
+		</@shiro.hasPermission>
+	</div>
+</div>
+
+<script type="text/javascript" src="${rframe.resourceBasePath}/js/entry/reseller-portal/download/download.js"></script>
+</@rframe.reseller>

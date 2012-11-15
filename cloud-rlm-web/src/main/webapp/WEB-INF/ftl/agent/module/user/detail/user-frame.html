@@ -1,0 +1,40 @@
+<#include '/common/frame/global-settings.html'>
+
+<#macro setting>
+	<#if userId?string=='new'>
+		<#assign displayTitle='Create User'>
+	<#else>
+		<#assign displayTitle='User:&nbsp;'+data.firstName+'&nbsp;'+data.lastName+'&nbsp;('+data.agentName+')'>
+	</#if>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>${displayTitle}</title>
+		<#include '/common/resource.html'>
+	</head>
+	<body>
+		<div id="contentZone">
+			<div id="headerDate">
+				<p id="date">${.now?string('EEEEEE dd MMM yyyy')}</p>
+			</div>
+			<div id="contentContainer">
+				<div id="contentCommon">
+					<h1>${displayTitle}</h1>
+					<#include '/common/frame/user-action.html'>
+				</div>
+				<#nested>
+			</div>
+		</div>
+	</body>
+</html>
+</#macro>
+
+<#macro settingNavTabs activeTab>
+	<div id="navbar">
+		<ul id="navbarCommon">
+			<#if (activeTab?? && activeTab=='details') ><li class="active"><#else><li></#if>
+			<a href="${basePath}/settings/Agents/${agentId}">Details</a></li>
+		</ul>
+	</div>
+</#macro>

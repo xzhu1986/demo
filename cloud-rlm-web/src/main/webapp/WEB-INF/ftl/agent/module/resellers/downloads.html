@@ -1,0 +1,83 @@
+<#import "/agent/module/resellers/resellerFrame.html" as rframe> <@rframe.reseller>
+<script>
+function formatNum(num)
+{   
+ if(!/^(\+|-)?(\d+)(\.\d+)?$/.test(num)){alert("wrong!"); return num;}
+ var a = RegExp.$1, b = RegExp.$2, c = RegExp.$3;
+ var re = new RegExp().compile("(\\d)(\\d{3})(,|$)");
+ while(re.test(b)) b = b.replace(re, "$1,$2$3");
+ return a +""+ b +""+ c;
+}
+</script>
+<div id="content">
+	<@rframe.resellerNavTabs "downloads"/>
+
+	<div id="contentBody">
+		<div class='downloads' >
+			<div id="dataFiles">
+				<h2>Data Files</h2>
+				<table>
+					<tr>
+						<th>Supplier Id</th>
+						<th>Supplier Name</th>
+						<th>File</th>
+						<th>Create Date</th>
+					</tr>
+					<#if dataFiles??>
+						<#list dataFiles as item>
+							<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+								<td>${item.supplierId}</td>
+								<td>${item.supplierName}</td>
+								<td><a href="${item.url}">${item.filename}</a></td>
+								<td>${item.createDate?date}</td>
+							</tr>
+						</#list>
+					</#if>
+				</table>
+			</div>
+			<div id="epdFilesAndHistory">
+				<h2>EPD Files/History</h2>
+				<table>
+					<tr>
+						<th>Last Import Date</th>
+						<th>Enhanced Product Count</th>
+						<th>Enhanced Product Images</th>
+						<th>Active Enhanced Products</th>
+					</tr>
+					<#if epdDownloadInfo??>
+						<tr>
+							<#if epdDownloadInfo.epdImportFinishdate??>
+								<td>${epdDownloadInfo.epdImportFinishdate?date}</td>
+							<#else>
+								<td></td>
+							</#if>
+							<td>formatNum(${epdDownloadInfo.epdProductCount})</td>
+							<td>formatNum(${epdDownloadInfo.epdImageCount})</td>
+							<td>formatNum(${epdDownloadInfo.epdMatchCount})</td>
+						</tr>
+					</#if>
+				</table>
+			</div>
+			<div id='imageFiles'>
+				<h2>Image Files</h2>
+				<table>
+					<tr>
+						<th>Supplier Id</th>
+						<th>Supplier Name</th>
+						<th>File</th>
+						<th>Create Date</th>
+					</tr>
+					<#if imageFiles??>
+						<#list imageFiles as item>
+							<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+							</tr>
+						</#list>
+					</#if>
+					
+				</table>
+			</div>
+			<div style="clear: both;"></div>
+		</div>
+	</div>
+</div>
+</@rframe.reseller>

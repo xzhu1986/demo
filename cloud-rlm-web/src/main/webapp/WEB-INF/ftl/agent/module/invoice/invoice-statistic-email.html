@@ -1,0 +1,27 @@
+<#include "/common/frame/global-settings.html">
+<div class="mailPreview">
+	<form action="${basePath}/invoice/statistic-report/mail.json?reportPathType=${reportPathType}" method="post" id="mailPreviewForm">
+		<input type="hidden" name="bcc" value="${mail.bcc!}" />
+		<table>
+			<caption><h3>Send Mail for Report : <@i18n.msg enumDisplay('au.com.isell.rlm.module.invoice.vo.InvoiceStatisticReportType',invoiceStatisticReportType)/></h3></caption>
+			<tr>
+				<td colspan="2">
+					&nbsp;
+					<!-- <button class="link-btn save-btn" id="sendEmail">Send</button> -->
+				</td>
+			</tr>
+			<tr>
+				<td><button type="button">To...</button></td>
+				<td><input type="text" name="to" value="${mail.to!}" /></td>
+			</tr>
+			<tr>
+				<td>Subject</td>
+				<td><input type="text" name="subject" value="${mail.subject!}" /></td>
+			</tr>
+			<tr style="display: none;">
+				<td colspan="2"><textarea name="body" draggable="false">${(mail.body)!}</textarea></td>
+			</tr>
+		</table>
+	</form>
+</div>
+

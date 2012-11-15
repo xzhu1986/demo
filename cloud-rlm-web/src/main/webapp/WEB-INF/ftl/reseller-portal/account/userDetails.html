@@ -1,0 +1,108 @@
+<#import "/reseller-portal/account/accountFrame.html" as rframe>
+<#include "/common/frame/global-settings.html">
+<@rframe.account>
+<div id="content">
+
+	<div id="contentBody">
+		<form action="#" autocomplete="off" method="post" id="detail-form">
+			<input type="hidden" name="serialNo" value='${(serialNo)!}'/>
+			<input type="hidden" name="userId" value='${(resellerUser.userId)!}'/>
+			
+			<div id="actionBar">
+				<@rframe.nav 'users'/>
+				<@shiro.hasPermission name="resellerportal:create_edit_user">
+				<ul class="rightAligned">
+					<li><button class="link-btn edit-btn" type="button">Update Details</button></li>
+					<li><button class="link-btn save-btn">Save</button></li>
+					<li><button class="link-btn undo-btn" type="reset">Undo</button></li>
+					<#if resellerUser.userId??>
+					<li><button class="link-btn cancel-btn" type="button">Cancel</button></li>
+					<li><button class="link-btn reset-password-btn not-hide-btn" type="button">Reset Password</button></li>
+					</#if>
+				</ul>
+				</@shiro.hasPermission>
+			</div>
+			
+			<div class="commonBox">
+				<h2>User Details</h2>
+				<table>
+					<tr>
+						<td>First Name</td>
+						<td><input type="text" size="15" value="${resellerUser.firstName!}" name="firstName"/></td>
+					</tr>
+					<tr>
+						<td>Last Name</td>
+						<td><input type="text" size="15" value="${resellerUser.lastName!}" name="lastName"/></td>
+					</tr>
+					<tr>
+						<td>Job Title</td>
+						<td><input type="text" size="25" value="${resellerUser.jobPosition!}" name="jobPosition"/></td>
+					</tr>
+					<tr>
+						<td>Phone Number</td>
+						<td>
+							<input class="disabled unmodified phone-prefix" disabled="disabled" type="text" size="1" value="${(phonePrefix)!}"/>
+							<input type="text" size="25" value="${resellerUser.phone!}" name="phone" class="phone-number"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Cell Phone</td>
+						<td>
+							<input class="disabled unmodified phone-prefix" disabled="disabled" type="text" size="1" value="${(phonePrefix)!}"/>
+							<input type="text" size="25" value="${resellerUser.mobile!}" name="mobile" class="phone-number"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Email&nbsp;(username)</td>
+						<td>
+							<input type="text" size="25" value="${resellerUser.email!}" name="email" reg="^.+$" tip="not blank" />
+						</td>
+					</tr>
+				</table>
+			</div>
+	
+			<input type="hidden" name="permissionDatas" id="permissionDatas" />
+			<#assign permissionDefs=dataLoader('au.com.isell.rlm.module.user.service.PermissionPreloadingService','getResellerPermissionPackages')>
+			
+			<div class="commonBox permission-setting" >
+				<#assign userPermission=resellerUser.permissions>
+				<#list permissionDefs as permissionPackage>
+					<#if (permissionPackage.orderNo?string)?length==1>
+						<h2>${permissionPackage.display}</h2>
+						<table>		
+							<#list permissionPackage.permissionGroups as permissionGroup>
+								<#if !(isTestLicense && (permissionGroup.display=='View Jobs' || permissionGroup.display=='Create/Edit Job')) >			
+								<tr>
+									<td width="240">${permissionGroup.display}</td>
+									<#list permissionGroup.permissions as permission>
+										<td>
+											<#assign hasPermission=exists_in_list(userPermission,permission.key)>
+											<#assign checkedStr=hasPermission?string("checked='checked'","")>
+											<input class="perm-element" type="checkbox" name="" data-key="${permission.key}" data-dependson="${permission.dependsOn!}" ${checkedStr}/>${permission.display}
+										</td>
+										
+									</#list>
+								</tr>
+								</#if>		
+							</#list>	
+						</table>
+					</#if>
+				</#list>
+			</div>
+			
+						
+			<div class="commonBox">
+				<h2>User Status</h2>
+				<select name="status" style="width: 120px;">
+					<#assign dataList=transforEnumToList('au.com.isell.rlm.module.user.constant.UserStatus',"false")> 
+					<@htmlGen.selOptions (resellerUser.status)!'null' dataList {"key":"key","display":"name"}/>
+				</select>
+			</div>
+
+			<div style="clear: both;"></div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript" src="${rframe.resourceBasePath}/js/entry/reseller-portal/account/user-detail.js"></script>
+</@rframe.account>

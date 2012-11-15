@@ -1,0 +1,73 @@
+<#include '/common/frame/global-settings.html'>
+
+<#macro supplier>
+<#if supplierId?string=='-1'>
+	<#assign displayTitle='Create Supplier'>
+<#else>
+	<#assign supplier_temp=dataLoader('au.com.isell.rlm.module.supplier.service.SupplierService',"getSupplier",supplierId)>
+	<#assign displayTitle='Supplier: '+supplier_temp.name+' ('+supplier_temp.country?upper_case+')'>
+</#if>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>${displayTitle}</title>
+		<#include '/common/resource.html'>
+	</head>
+	<body>
+		<div id="contentZone">
+			<div id="headerDate">
+				<p id="date">${.now?string('EEEEEE dd MMM yyyy')}</p>
+			</div>
+			<div id="contentContainer">
+				<div id="contentCommon">
+					<h1>${displayTitle}</h1>
+					<#include '/common/frame/user-action.html'>
+				</div>
+				<#nested>
+			</div>
+		</div>
+	</body>
+</html>
+</#macro>
+
+<#macro supplierNavTabs activeTab>
+	<div id="navbar">
+		<ul id="navbarCommon">
+		<@shiro.hasPermission name="supplier:view">
+			<#if (activeTab?? && activeTab=='details') ><li class="active"><#else><li></#if>
+				<a href="${basePath}/supplier/${supplierId}/details">Details</a></li>
+			<#if supplierId gt 0><#-- supplierId==-1 means to create supplier -->
+				<@shiro.hasPermission name="supplier:annualBilling:view">
+					<#if (activeTab?? && activeTab=='annualBilling') ><li class="active"><#else><li></#if>
+						<a href="${basePath}/supplier/${supplierId}/billing">Billing</a></li>
+				</@shiro.hasPermission>
+				<@shiro.hasPermission name="supplier:dataRequest:view">
+					<#if (activeTab?? && activeTab=='dataRequests') ><li class="active"><#else><li></#if>
+						<a href="${basePath}/supplier/${supplierId}/data-requests">Data Requests</a></li>
+				</@shiro.hasPermission>
+				<@shiro.hasPermission name="supplier:priceBreak:view">
+					<#if (activeTab?? && activeTab=='priceBreaks') ><li class="active"><#else><li></#if>
+						<a href="${basePath}/supplier/${supplierId}/price-breaks">Price Breaks</a></li>
+				</@shiro.hasPermission>
+				<@shiro.hasPermission name="reseller:view">
+					<#if (activeTab?? && activeTab=='resellers') ><li class="active"><#else><li></#if>
+						<a href="${basePath}/supplier/${supplierId}/resellers">Resellers</a></li>
+				</@shiro.hasPermission>
+				<@shiro.hasPermission name="supplier:branch:view">	
+					<#if (activeTab?? && activeTab=='branches') ><li class="active"><#else><li></#if>
+						<a href="${basePath}/supplier/${supplierId}/branches">Branches</a></li>
+				</@shiro.hasPermission>
+				<@shiro.hasPermission name="priceupdates:view">	
+					<#if (activeTab?? && activeTab=='supplierUpdateDetails') ><li class="active"><#else><li></#if>
+						<a href="${basePath}/supplier/${supplierId}/supplierupdate">Price Updates</a></li>
+				</@shiro.hasPermission>
+				<@shiro.hasPermission name="priceupdates:view">	
+					<#if (activeTab?? && activeTab=='supplierUpdateHistory') ><li class="active"><#else><li></#if>
+						<a href="${basePath}/supplier/${supplierId}/supplierupdatehistory">Update History</a></li>
+				</@shiro.hasPermission>
+			</#if>
+		</@shiro.hasPermission>
+		</ul>
+	</div>
+</#macro>

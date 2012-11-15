@@ -1,0 +1,78 @@
+<#include "/common/frame/global-settings.html">
+<form action="${basePath}/supplier-portal/reseller-map.json" id="map-form" autocomplete="off">
+<input type="hidden" name="optionUpdate">
+<input type="hidden" name="supplierDisableComment" value="${(rsMap.supplierDisableComment)!}">
+<input type="hidden" name="oldPriceBreakId" value="${(rsMap.priceBreakId)!}">
+<input type="hidden" name="oldSerialNo" value="${(rsMap.serialNo)!}">
+<input type="hidden" name="serialNo" value="${(rsMap.serialNo)!}">
+<div class="commonBox" style="width:100%">
+	<h2>Reseller Details</h2>
+	<table>
+		<tr>
+			<td>Company Name:</td>
+			<td>${(reseller.company)!}</td>
+		</tr>
+		<tr>
+			<td>Contact Person:</td>
+			<td>${(reseller.billingInfo.firstName)!} ${(reseller.billingInfo.lastName)!}</td>
+		</tr>
+		<tr>
+			<td>Phone Number:</td>
+			<td>${(reseller.billingInfo.phone)!}</td>
+		</tr>
+		<tr>
+			<td>Address:</td>
+			<td>${(address)!}</td>
+		</tr>
+		<tr>
+			<td>Existing Customer:</td>
+			<td>${rsMap.existingCustomer?string('Yes','No')}</td>
+		</tr>
+		<tr>
+			<td>Account:</td>
+			<td>${(rsMap.supplierAccountNumber)!}</td>
+		</tr>
+	</table>
+</div>
+<div style="clear: both;"></div>
+<div class="commonBox" style="width:100%">
+	<h2>Status</h2>
+	<table>
+		<tr>
+			<td>Break:</td>
+			<td><select  id="priceBreak" name='priceBreakId' reg="^.+$" tip="not blank">
+				<#assign dataList=dataLoader('au.com.isell.rlm.module.supplier.service.SupplierService',"queryPriceBreaks",'',supplierId)> 
+				<@htmlGen.selOptions rsMap.priceBreakId!'null' dataList {"key":"priceBreakId","display":"name"}/>
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Status:</td>
+			<td><@i18n.msg enumDisplay('au.com.isell.rlm.module.reseller.domain.ResellerSupplierMap$ApprovalStatus',rsMap.status!'')/></td>
+		</tr>
+		<tr>
+			<td>Update:</td>
+			
+			<td>
+				<button class="link-btn approval-btn" type="button">Approve</button>
+				<button class="link-btn decline-btn" type="button">Decline</button>
+			</td>
+		</tr>
+	</table>
+</div>
+<div style="clear: both;"></div>
+<div class="commonBox" style="width:100%">
+	<h2>History</h2>
+		<#if histories??>
+			<ul>
+			<#list histories as item>
+				<#if item.formImport?? && item.formImport>
+				<li>${(item.operate)!} via ${(item.via)!}</li>
+				<#else>
+				<li>${(item.operate)!} on ${(item.date?datetime)!} <#if item.userName??>by ${item.userName}</#if> via ${(item.via)!}</li>
+				</#if>
+			</#list>
+			</ul>
+		</#if>
+</div>
+</form>

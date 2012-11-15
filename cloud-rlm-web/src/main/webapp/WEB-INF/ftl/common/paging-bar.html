@@ -1,0 +1,25 @@
+<#assign basePath=req.contextPath/> 
+<#-- paging object is associate with au.com.isell.common.paging.Paging2 -->
+<#macro pagingBar1 paging>
+	<div id="pagingBar" class='pagination'>
+		<#if paging.previous??>
+			<a href="${basePath}/${paging.previous.value}"><span class="red">&lt;Previous</span></a>
+		<#else>
+			<a><span class="red">&lt;Previous</span></a>
+		</#if>
+		<#if paging.navList??>
+			<#list paging.navList as item>
+				<#if item.key==paging.current>
+					<a class='currentPage'>${item.key}</a>
+				<#else>
+					<a href="${basePath}/${item.value}">${item.key}</a>
+				</#if>
+			</#list>
+		</#if>
+		<#if paging.next??>
+			<a href="${basePath}/${paging.next.value}"><span class="red">Next&gt;</span></a>
+		<#else>
+			<a><span class="red">Next&gt;</span></a>
+		</#if>
+	</div>
+</#macro>

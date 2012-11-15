@@ -1,0 +1,12 @@
+#site-body{
+	width: 960px;
+}
+
+#site-head{
+	height: 50px;
+	background: yellow;
+}
+#site-foot{
+	height: 50px;
+	background: blue;
+}

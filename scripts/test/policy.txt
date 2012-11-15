@@ -1,0 +1,11 @@
+{ "expiration": "2012-12-01T12:00:00.000Z",
+  "conditions": [
+    {"bucket": "isell.resource.test"},
+    ["starts-with", "$key", "data/test_supplier_1/"],
+    {"acl": "authenticated-read"},
+	{"redirect": "http://www.baidu.com"},
+    {"x-amz-meta-uuid": "14365123651274"},
+    ["starts-with","$x-amz-meta-tag", ""],
+    ["starts-with","$Content-Type", "image/"]
+  ]
+}

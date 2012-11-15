@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body>
+  ...
+  <form action="http://s3.amazonaws.com/isell.resource.test" method="post" enctype="multipart/form-data">
+    Key to upload: <input type="input" name="key" value="data/test_supplier_1/${filename}" /><br />
+    <input type="hidden" name="acl" value="authenticated-read" />
+    Content-Type: <input type="input" name="Content-Type" value="image/*" /><br />
+    <input type="hidden" name="x-amz-meta-uuid" value="14365123651274" />
+    Tags for File: <input type="input" name="x-amz-meta-tag" value="" /><br />
+    <input type="hidden" name="redirect" value="http://www.baidu.com" />
+	<input type="hidden" name="AWSAccessKeyId" value="${access_key}" />
+    <input type="hidden" name="Policy" value="${policy}" /><br />
+    <input type="hidden" name="Signature" value="${signature}" /><br />
+    File: <input type="file" name="file" /> <br />
+    <!-- The elements after this will be ignored -->
+    <input type="submit" name="submit" value="Upload to Amazon S3" />
+  </form>
+</html>

@@ -1,0 +1,15 @@
+<form action="http://s3.amazonaws.com/${data.bucket}" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="AWSAccessKeyId" value="${data.AWSAccessKeyId}" />
+	<input type="hidden" name="Signature" value="${data.signature}" />
+	<input type="hidden" name="Policy" value="${data.policy}" />
+	<#list data.conditions as item>
+		<#assign value=item.value>
+		<#if item.name=='key' && (value?index_of('l',0) gt -1)>
+			<input type="hidden" name="${item.name}" value="${value}${r'${filename}'}" />
+		<#else>
+			<input type="hidden" name="${item.name}" value="${value}" />
+		</#if>
+	</#list>
+	<input type="file" name="file" id="fileToUpload"/>
+	<input type="submit" name="submit" value="Upload" />
+</form>

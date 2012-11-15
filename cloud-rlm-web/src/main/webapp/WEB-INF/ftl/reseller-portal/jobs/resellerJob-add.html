@@ -1,0 +1,80 @@
+<#import "/reseller-portal/resellerFrame.html" as rframe> 
+<#include '/common/frame/global-settings.html'>
+
+<@rframe.reseller "jobs">
+<div id="content">
+	<div id="contentBody">
+		<form action="#" method="post">
+			<div id="actionBar">
+				<ul>
+					<li><button class='link-btn'>Save</button></li>
+				</ul>
+			</div>
+			
+			<div class="autoWithCommonBox">
+				<h2>Create a New Job</h2>	
+				<div class="wideCommonBox">		
+					<table>
+						<tr>
+							<td>Job Name</td>
+							<td><input type="text" size="25" value="" name="jobName" reg='^.+$'/></td>
+							<td>Type</td>
+							<td>
+								<select name='typeID'>
+									<#assign dataList=dataLoader('au.com.isell.rlm.module.jbe.service.JobService',"getJobTypes")> 
+									<@htmlGen.selOptions '' dataList {"key":"typeId","display":"typeName"}/>
+								</select>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>Job Status</td>
+							<td colspan="3">
+								<input type="hidden" size="53" value="1" name="statusID"/>
+								<select disabled='disabled'>
+									<#assign dataList=transforEnumToList('au.com.isell.rlm.module.jbe.domain.JobStatus',"true","true")>
+									<@htmlGen.selOptions '1' dataList {"key":"key","display":"name"}/>
+								</select>
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="topAligned">Description</td>
+							<td colspan="3"><textarea rows="8" cols="40" name="description"  reg='^[\w\W]+$'></textarea></td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="commonBox">		
+					<table>
+						<tr>
+							<td>Contact</td>
+							<td><input type="text" size="15" value="${contact}" readonly="readonly" class='disabled'/></td>
+						</tr>
+						
+						<tr>
+							<td>Phone<br /><br /></td>
+							<td><input type="text" size="15" value="${phone}" name="jobPhone" readonly="readonly" class='disabled'/><br /><br /></td>
+						</tr>
+						
+						<tr>
+							<td>Job Priority</td>
+							<td>
+								<select name="jobPriority">
+									<option value=""></option>
+									<#assign dataList=transforEnumToList('au.com.isell.rlm.module.jbe.domain.JobPriority',"true","true")>
+									<@htmlGen.selOptions '3' dataList {"key":"key","display":"name"}/>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div style="clear: both;"></div>
+			</div>
+			
+			<div style="clear: both;"></div>
+		</form>
+	</div>
+</div>
+</@rframe.reseller>

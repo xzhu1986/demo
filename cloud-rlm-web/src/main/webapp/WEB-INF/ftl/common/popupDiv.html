@@ -1,0 +1,18 @@
+<#include '/common/frame/global-settings.html'>
+<#macro selectCountry>
+	<div id="dialog-select-country" title="Please select country" style="display:none;">
+		<form id="form-select-country">
+			<table>
+				<tr class="address-item">
+					<td>Country:</td>
+					<td>
+						<select name="country" id="country">
+							<#assign dataList=dataLoader('au.com.isell.rlm.module.address.service.AddressService',"getSubItems",'root')>
+							<@htmlGen.selOptions '' dataList {"key":"code","display":"name"}/>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</#macro>

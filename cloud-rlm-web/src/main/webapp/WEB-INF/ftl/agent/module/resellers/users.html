@@ -1,0 +1,84 @@
+<#import "/agent/module/resellers/resellerFrame.html" as rframe>
+<#include "/common/frame/global-settings.html">
+<@rframe.reseller>	
+<div id="content">
+	<@rframe.resellerNavTabs "users"/>
+	
+	<div id="contentBody">
+		<div id="actionBar">
+			<ul>
+				<@shiro.hasPermission name="reseller:create">
+					<li><button class="link-btn reseller-user-btn" data-url="${rframe.basePath}/resellers/${serialNo}/user/new">New</button></li>
+				</@shiro.hasPermission>
+			</ul>
+		</div>
+		<div id="sidebar">
+			<div class="surroundingBox">
+				<h2>Filters</h2>
+				<ul id='query-filters'>
+					<#assign dataList=transforEnumToList('au.com.isell.rlm.module.reseller.vo.ResellerUserSearchFilters',"false")>
+					<#list dataList as dataItem>
+						<#if filter?? && filter?string==dataItem.key?string>
+							<li class="selected"><a href="" data-val='${dataItem.key}' >${dataItem.name}</a></li>
+						<#else>
+							<li><a href="" data-val='${dataItem.key}' >${dataItem.name}</a></li>
+						</#if>
+					</#list>
+				</ul>
+			</div>
+		</div>
+		<div id="contentMain">
+			<form action="#" id="users-search-form" autocomplete="off">
+				<input type="hidden" name="filter" value='${(filter)!}'/>
+				<input type="hidden" name="serialNo" value='${(serialNo)!}'/>
+				<table class="maxWidthTable sortable">
+					<tr id="filter">
+						<th width='19%'><input name="name" type="text" style="width:100%" value='${(name)!}'/></th>
+						<th width='20%'><input name="jobPosition" type="text" style="width:100%" value='${(jobPosition)!}'/></th>
+						<th width='20%'><input name="phone" type="text" style="width:100%" value='${(phone)!}'/></th>
+						<th width='20%'><input name="email" type="text" style="width:100%" value='${(email)!}'/></th>
+						<th width="20%">
+							<select name="status" >
+								<option value=""></option>
+								<#assign dataList=transforEnumToList('au.com.isell.rlm.module.user.constant.UserStatus',"true")>
+								<@htmlGen.selOptions status!"" dataList {"key":"key","display":"name"}/>
+							</select>	
+							<input name="submit" id="search" type="submit" title="Search" value="" /> 
+							<input name="cancel" id="cancel" value="" type="reset" />
+							<select name="pageSize" style="float:right;">
+								<@htmlGen.selOptions (pageSize)!25 pageDataList {"key":"key","display":"value"}/>
+							</select>
+						</th>
+					</tr>
+				
+					<tr id="filterTitle">
+						<td>Name</td>
+						<td>Job Title</td>
+						<td>Phone</td>
+						<td>Email</td>
+						<td>Status</td>
+					</tr>
+					<#if data??>
+						<#list data as item>
+							<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+								<td><a href="${basePath}/resellers/${serialNo}/user/${item.userId!}">${(item.firstName)!} ${(item.lastName)!}</a></td>
+								<td>${(item.jobPosition)!}</td>
+								<td>${(item.phone)!}</td>
+								<td>${(item.email)!}</td>
+								<td>${(item.status)!}</td>
+							</tr>
+						</#list>
+					</#if>
+				</table>
+			</form>
+			<div id="pageLinks">
+				<@pagingBar.pagingBar1 paging/>
+			</div>
+		</div>
+		
+		<div style="clear: both;"></div>
+	</div>	
+	
+</div>	
+<script type="text/javascript" src="${rframe.resourceBasePath}/js/entry/agent/module/reseller/users.js"></script>
+</@rframe.reseller>

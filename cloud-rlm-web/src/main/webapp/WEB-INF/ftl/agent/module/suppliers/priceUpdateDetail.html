@@ -1,0 +1,36 @@
+<#import "/agent/module/suppliers/priceUpdateFrame.html" as pframe>
+<#import "/common/utils/html-generator.html" as htmlGen>
+<#assign transforEnumToList = "au.com.isell.rlm.common.freemarker.func.EnumToList"?new()>
+<#assign dataLoader = "au.com.isell.rlm.common.freemarker.func.DataLoader"?new()>
+<#include '/common/frame/global-settings.html'>
+
+<@pframe.priceUpdate>
+<div id="content">
+	<@pframe.priceUpdateNavTabs "details"/>
+	<div id="contentBody">
+		<form action="#" autocomplete="off" method="post" id="detail-form">
+			<input type="hidden" id="dataSavedFlag" value='${saved!}'/>
+			<div id="actionBar">
+				<ul>
+					<@shiro.hasPermission name="priceupdates:edit">
+						<li><button class="link-btn edit-btn" type="button">Edit</button></li>
+						<li><button class="link-btn save-btn">Save</button></li>
+						<li><button class="link-btn cancel-btn" type="reset">Cancel</button></li>
+					</@shiro.hasPermission>
+					<#if showStartBtn>
+						<li><a href="${basePath}/supplier/${supplierId}/priceupdates/${scheduleId}/Started" onclick="$('#detail-form').mask('Starting ...');">Started</a></li>
+					</#if>
+					<#if showOtherOperationBtn>
+						<li><a href="${basePath}/supplier/${supplierId}/priceupdates/${scheduleId}/Completed" onclick="$('#detail-form').mask('Completing ...');">Completed</a></li>
+						<li><a href="${basePath}/supplier/${supplierId}/priceupdates/${scheduleId}/NoDataAvailable" onclick="$('#detail-form').mask('No Data Available ...');">No Data Available</a></li>
+						<li><a href="${basePath}/supplier/${supplierId}/priceupdates/${scheduleId}/Snooze" onclick="$('#detail-form').mask('Snooze 1 Day ...');">Snooze 1 Day</a></li>
+					</#if>
+					<#if executeMsg?? && executeMsg!=""><li><a style="color:red">${executeMsg}</a></li></#if>
+				</ul>
+			</div>
+			<#include "common/priceUpdateDetail.html"/> 
+		</form>
+	</div>
+</div>
+<script type="text/javascript" src="${pframe.resourceBasePath}/js/entry/agent/module/priceupdate/price-update-detail.js"></script>
+</@pframe.priceUpdate>

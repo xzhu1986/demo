@@ -1,0 +1,57 @@
+<#import '../settings-frame.html' as sf>
+<#include '/common/frame/global-settings.html'>
+
+<@sf.sframe>
+	<form action="#" id="setting-search-form" autocomplete="off">
+		<table class="maxWidthTable sortable">
+			<tr id="filter">
+				<th width='20%'><input name="name" type="text" style="width:100%" value='${(name)!}'/></th>
+				<th width='20%'>
+					<select name="country" style="width:100%;">
+						<option value=""></option>
+						<#assign dataList=dataLoader('au.com.isell.rlm.module.address.service.impl.AddressServiceImpl',"getSubItems",'root')>
+						<@htmlGen.selOptions country!'' dataList {"key":"code","display":"name"}/>
+					</select>
+				</th>
+				<th width="30%">
+					<input name="company" type="text" value='${(company)!}' style="width:100%;"/>
+				</th>
+				<th width="15%">
+					<select name="status" >
+						<option value=""></option>
+						<#assign dataList=transforEnumToList('au.com.isell.rlm.module.supplier.domain.Supplier$Status',"true")>
+						<@htmlGen.selOptions status!"" dataList {"key":"key","display":"name"}/>
+					</select>	
+					<input name="submit" id="search" type="submit" title="Search" value="" /> 
+					<input name="cancel" id="cancel" value="" type="reset" />
+					<select name="pageSize"  style="float:right;">
+						<@htmlGen.selOptions (pageSize)!25 pageDataList {"key":"key","display":"value"}/>
+					</select>
+				</th>
+			</tr>
+		
+			<tr id="filterTitle">
+				<td>Name</td>
+				<td>Country</td>
+				<td>Company</td>
+				<td>Status</td>
+			</tr>
+			<#if data??>
+				<#list data as item>
+					<tr ${(item_index%2==1)?string('class="pajamaLine"',"")}>
+						<td><a href="${sf.basePath}/settings/${category}/${item.agentId}" target="_blank">${(item.name)!}</a></td>
+						<td>
+							<#assign addrData=dataLoader('au.com.isell.rlm.module.address.service.AddressService','getAddressItem',item.country)>
+							${(addrData.shortName)!}
+						</td>
+						<td>${(item.company)!}</td>
+						<td>${(item.status)!}</td>
+					</tr>
+				</#list>
+			</#if>
+		</table>
+		<div id="pageLinks">
+			<@pagingBar.pagingBar1 paging/>
+		</div>
+	</form>
+</@sf.sframe>

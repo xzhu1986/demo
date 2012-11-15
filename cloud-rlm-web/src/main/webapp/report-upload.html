@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>upload</h3>
+	<form action="https://dws.docmosis.com/services/rs/uploadTemplate" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="accessKey" value="MDFmZTM0YmEtZGRlMy00MzNlLThiNDEtZmFmNWQxMDQ1MDUyOjA0MTM2NTc"/>
+		<input type="hidden" name="templateName" value="proj/WelcomeTemplate2test.doc"/>
+		<input type="file" name="templateFile" />
+		<button>upload</button>
+	</form>
+	<h3>download</h3>
+	<form action="https://dws.docmosis.com/services/rs/getTemplate" method="post">
+		<input type="hidden" name="accessKey" value="MDFmZTM0YmEtZGRlMy00MzNlLThiNDEtZmFmNWQxMDQ1MDUyOjA0MTM2NTc"/>
+		<input type="hidden" name="templateName" value="proj/WelcomeTemplate2test.doc"/>
+		<button>download</button>
+	</form>
+	<h3>render</h3>
+	<form action="https://dws.docmosis.com/services/rs/render" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="accessKey" value="MDFmZTM0YmEtZGRlMy00MzNlLThiNDEtZmFmNWQxMDQ1MDUyOjA0MTM2NTc"/>
+		<input type="hidden" name="templateName" value="proj/WelcomeTemplate2test.doc"/>
+		<input type="hidden" name="outputName" value="test.pdf"/>
+		<input type="hidden" name="outputFormat" value="pdf"/>
+		<input type="hidden" name="data" value='{"title":"Company Profile Report", "scope":"Initial Scoping Report"}'/>
+		<button>download</button>
+	</form>
+	
+</body>
+</html>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<permissionPackage display="Settings"  orderNo="4">
+	<permissionGroup display="Settings">
+		<permission key="setting:view" display="Enabled"/>
+		<permission key="setting:edit" display="Edit" dependsOn="setting:view"/>
+		<permission key="setting:create" display="Create" dependsOn="setting:edit"/>
+		<permission key="setting:delete" display="Delete" dependsOn="setting:view"/>
+	</permissionGroup>
+</permissionPackage>

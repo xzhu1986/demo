@@ -1,0 +1,104 @@
+<#import "/agent/module/resellers/resellerFrame.html" as rframe>
+<#include "/common/frame/global-settings.html">
+
+<@rframe.reseller>
+<div id="content">
+	<@rframe.resellerNavTabs "users"/>
+
+	<div id="contentBody">
+		<form action="#" autocomplete="off" method="post" id="detail-form">
+			<input type="hidden" name="serialNo" value='${(serialNo)!}'/>
+			<input type="hidden" name="userId" value='${(resellerUser.userId)!}'/>
+			<input type="hidden" name="username" value='${(resellerUser.username)!}'/>
+			
+			<div id="actionBar">
+				<ul>
+					<@shiro.hasPermission name="reseller:edit">
+						<li><button class="link-btn edit-btn" type="button">Edit</button></li>
+						<li><button class="link-btn save-btn">Save</button></li>
+						<li><button class="link-btn cancel-btn" type="reset">Cancel</button></li>
+						<li><button class="link-btn reset-password-btn not-hide-btn" type="button">Reset Password</button></li>
+					</@shiro.hasPermission>
+				</ul>
+			</div>
+			
+			<div class="commonBox">
+				<h2>User Details</h2>
+				<table>
+					<tr>
+						<td>First Name</td>
+						<td><input type="text" size="15" value="${resellerUser.firstName!}" name="firstName"/></td>
+					</tr>
+					<tr>
+						<td>Last Name</td>
+						<td><input type="text" size="15" value="${resellerUser.lastName!}" name="lastName"/></td>
+					</tr>
+					<tr>
+						<td>Job Title</td>
+						<td><input type="text" size="25" value="${resellerUser.jobPosition!}" name="jobPosition"/></td>
+					</tr>
+					<tr>
+						<td>Phone Number</td>
+						<td>
+							<div class="div_view"><a href='callto://${resellerUser.phone!}'>${resellerUser.phone!}</a></div>
+							<div class="div_edit"><input type="text" size="25" value="${resellerUser.phone!}" name="phone"/></div>
+						</td>
+					</tr>
+					<tr>
+						<td>Cell Phone</td>
+						<td>
+							<div class="div_view"><a href='callto://${resellerUser.mobile!}'>${resellerUser.mobile!}</a></div>
+							<div class="div_edit"><input type="text" size="25" value="${resellerUser.mobile!}" name="mobile"/></div>
+						</td>
+					</tr>
+					<tr>
+						<td>Email&nbsp;(username)</td>
+						<td>
+							<div class="div_view"><a href="mailto:${resellerUser.email!}">${resellerUser.email!}</a></div>
+							<div class="div_edit"><input type="text" size="25" value="${resellerUser.email!}" name="email" reg="^.+$" tip="not blank" /></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+	
+			<input type="hidden" name="permissionDatas" id="permissionDatas" />
+			<#assign permissionDefs=dataLoader('au.com.isell.rlm.module.user.service.PermissionPreloadingService','getResellerPermissionPackages')>
+			
+			<div class="commonBox permission-setting" >
+				<#assign userPermission=resellerUser.permissions>
+				<#list permissionDefs as permissionPackage>
+					<#if (permissionPackage.orderNo?string)?length==1>
+						<h2>${permissionPackage.display}</h2>
+						<table>		
+							<#list permissionPackage.permissionGroups as permissionGroup>		
+								<tr>
+									<td width="240">${permissionGroup.display}</td>
+									<#list permissionGroup.permissions as permission>
+										<td>
+											<#assign hasPermission=exists_in_list(userPermission,permission.key)>
+											<#assign checkedStr=hasPermission?string("checked='checked'","")>
+											<input class="perm-element" type="checkbox" name="" data-key="${permission.key}" data-dependson="${permission.dependsOn!}" ${checkedStr}/>${permission.display}</td>
+									</#list>
+								</tr>		
+							</#list>	
+						</table>
+					</#if>
+				</#list>
+			</div>
+			
+						
+			<div class="commonBox">
+				<h2>User Status</h2>
+				<select name="status" style="width: 120px;">
+					<#assign dataList=transforEnumToList('au.com.isell.rlm.module.user.constant.UserStatus',"false")> 
+					<@htmlGen.selOptions (resellerUser.status)!'null' dataList {"key":"key","display":"name"}/>
+				</select>
+			</div>
+
+			<div style="clear: both;"></div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript" src="${rframe.resourceBasePath}/js/entry/agent/module/reseller/user-detail.js"></script>
+</@rframe.reseller>

@@ -1,0 +1,121 @@
+<#import "/agent/module/user/detail/user-frame.html" as sframe>
+<#include "/common/frame/global-settings.html">
+
+<@sframe.setting>
+<div id="content">
+	<div id="contentBody">
+		<form action="#" autocomplete="off" method="post" id="detail-form">
+			<div id="actionBar">
+				<ul>
+					<@shiro.hasPermission name="setting:edit">
+					<li><button class="link-btn edit-btn" type="button">Edit</button></li>
+					<li><button class="link-btn save-btn">Save</button></li>
+					<li><button class="link-btn" type="button" id="defaults" >Defaults</button></li>
+					<li><button class="link-btn cancel-btn" type="reset" >Cancel</button></li>
+					</@shiro.hasPermission>
+				</ul>
+			</div>
+			<div class="commonBox">
+				<h2>iSell User Details</h2>
+				<table>
+					<#include 'common-fields.html'>
+					
+					<tr>
+						<td>Main Agency</td>
+						<td>
+							<div class="ui-widget searchable-combobox">
+								<select disabled="disabled" name="agentId" id="agent" reg="^.+$" tip="not blank"  style="width: 120px;">
+									<option value=""></option>
+									<#assign dataList=dataLoader('au.com.isell.rlm.module.agent.service.AgentService',"getAgencyList")> 
+									<@htmlGen.selOptions (data.agentId)!'null' dataList {"key":"agentId","display":"name"}/>
+								</select>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>Is Sales Rep</td>
+						<td><input type="checkbox"  ${(data.salesRepo!false)?string( "checked='checked'","")} name="salesRepo" /></td>
+					</tr>
+					<tr>
+						<td>Data Skill Level</td>
+						<td>
+						<#assign skLevelData=[1,2,3,4,5,6,7,8,9,10]>
+						<#assign dbSkLev=data.dataSkillLevel!-1>
+						<select name="dataSkillLevel" id="dataSkillLevel" style="width: 120px;">
+							<option value=""></option>
+							<#list skLevelData as lev>
+								<option value="${lev}" ${(dbSkLev==lev)?string('selected="selected"','')}>${lev}</option>
+							</#list>
+						</select>
+					</tr>
+					<tr>
+						<td>Phone</td>
+						<td><input type="text" class="form-field2" value="${(data.phone)!}" name="phone"/></td>
+					</tr>
+					<tr>
+						<td>Mobile</td>
+						<td><input type="text" class="form-field2" value="${(data.mobile)!}" name="mobile"/></td>
+					</tr>
+				</table>
+			</div>
+			
+			<input type="hidden" name="permissionDatas" id="permissionDatas" />
+			<#assign permissionDefs=dataLoader('au.com.isell.rlm.module.user.service.PermissionPreloadingService','getAgentPermissionPackages')>
+			
+			<div class="commonBox permission-setting" >
+				<#assign userPermission=data.permissions>
+				<#list permissionDefs as permissionPackage>
+					<#if (permissionPackage.orderNo?string)?length==1>
+						<h2>${permissionPackage.display}</h2>
+						<table>		
+							<#list permissionPackage.permissionGroups as permissionGroup>		
+								<tr>
+									<td width="140">${permissionGroup.display}</td>
+									<#list permissionGroup.permissions as permission>
+										<td>
+											<#assign hasPermission=exists_in_list(userPermission,permission.key)>
+											<#assign checkedStr=hasPermission?string("checked='checked'","")>
+											<input class="perm-element" type="checkbox" name="" data-key="${permission.key}" data-dependson="${permission.dependsOn!}" ${checkedStr}/>${permission.display}</td>
+									</#list>
+								</tr>		
+							</#list>	
+						</table>
+					</#if>
+				</#list>
+			</div>
+			
+			<div class="commonBox permission-setting" >
+				<#assign userPermission=data.permissions>
+				<#list permissionDefs as permissionPackage>
+					<#if (permissionPackage.orderNo?string)?length==2>
+						<h2>${permissionPackage.display}</h2>
+						<table>		
+							<#list permissionPackage.permissionGroups as permissionGroup>		
+								<tr>
+									<td width="140">${permissionGroup.display}</td>
+									<#list permissionGroup.permissions as permission>
+										<td>
+											<#assign hasPermission=exists_in_list(userPermission,permission.key)>
+											<#assign checkedStr=hasPermission?string("checked='checked'","")>
+											<input class="perm-element" type="checkbox" name="" data-key="${permission.key}" data-dependson="${permission.dependsOn!}" ${checkedStr}/>${permission.display}</td>
+									</#list>
+								</tr>		
+							</#list>	
+						</table>
+					</#if>
+				</#list>
+			</div>
+
+			<div style="clear: both;"></div>
+		</form>
+	</div>
+</div>
+<div id="defaults-permission-container" style='display:none;'>
+	<select size=1 id='defaults-permission-sel'>
+		<option value=""></option>
+		<#assign dataList=transforEnumToList('au.com.isell.rlm.module.user.constant.RolePermissionDefineService$DefaultRole',"false")> 
+		<@htmlGen.selOptions '' dataList {"key":"key","display":"name"}/>
+	</select>
+</div>
+<script type="text/javascript" src="${resourceBasePath}/js/entry/agent/module/user/agent-user.js"></script>
+</@sframe.setting>

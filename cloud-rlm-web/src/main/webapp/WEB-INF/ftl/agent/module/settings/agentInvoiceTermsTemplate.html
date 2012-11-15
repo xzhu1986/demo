@@ -1,0 +1,69 @@
+<#import "/agent/module/settings/agentFrame.html" as sframe>
+<#include "/common/frame/global-settings.html">
+
+<@sframe.setting>
+<div id="content">
+	<@sframe.settingNavTabs 'InvoiceTermsTemplate'/>
+
+	<div id="contentBody">
+		<form action="#" autocomplete="off" method="post" id="detail-form">
+			<input type="hidden" value="${(agentId)!}" name="agentId"/>
+			<div id="actionBar">
+				<ul>
+				<@shiro.hasPermission name="setting:edit">
+					<li><button class="link-btn edit-btn" type="button">Edit</button></li>
+					<li><button class="link-btn save-btn">Save</button></li>
+					<li><button class="link-btn cancel-btn" type="reset">Cancel</button></li>
+				</@shiro.hasPermission>
+				</ul>
+			</div>
+			<div class="commonBox wideCommonBox">
+				<h2>Invoice Terms Template</h2>
+				<table>
+					<tr>
+						<td><textarea rows="30" cols="60" name="content">${invoiceTermsTemplate.content!}</textarea></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="commonBox">
+				<h2>Replacement Variables</h2>
+				<table>
+					<tr>
+						<td><br />${r"${custfirstname}"}</td>
+						<td><br /></td>
+					</tr>
+					
+					<tr>
+						<td>${r"${custlastname}"}</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>${r"${custfullname}"}</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>${r"${custserialnumber}"}</td>
+						<td></td>
+					</tr>
+					
+					
+					<tr>
+						<td>${r"${licenseExpiryDate}"}</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>${r"${totalUsers}"}</td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+			<div style="clear: both;"></div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript" src="${resourceBasePath}/js/entry/agent/module/setting/agent-invoiceTermsTemplate.js"></script>
+</@sframe.setting>
