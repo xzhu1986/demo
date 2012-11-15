@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<permissionPackage display="Supplier Price Updates"  orderNo="22">
-	<permissionGroup display="Price Updates">
-		<permission key="priceupdates:view" display="Enabled"/>
-		<permission key="priceupdates:edit" display="Edit" dependsOn="priceupdates:view"/>
-	</permissionGroup>
-</permissionPackage>

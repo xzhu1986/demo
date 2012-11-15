@@ -1,1 +1,0 @@
-mvn install:install-file -DgroupId=com.siemens.ct.exi -DartifactId=exificient -Dversion=0.8 -Dfile=exificient.jar -Dpackaging=jar -DgeneratePom=true
